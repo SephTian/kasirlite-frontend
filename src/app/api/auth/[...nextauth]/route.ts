@@ -1,9 +1,9 @@
-import NextAuth, { NextAuthOptions } from 'next-auth';
+import NextAuth, { DefaultSession, NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import api from '@/services/api';
-import { UserSession } from '@/types';
+import { UserSession } from '@/lib/types';
 import { AxiosError } from 'axios';
 import { verifyJwt } from '@/utils/jwt';
+import api from '@/lib/services/api';
 
 declare module 'next-auth' {
   interface User {
@@ -15,13 +15,13 @@ declare module 'next-auth' {
   }
 
   interface Session {
-    user: UserSession;
+    user: UserSession & DefaultSession['user'];
   }
 }
 
 const EXP_JWT_NEXT_AUTH = 60 * 60 * 24 * 7; // 1 minggu
 
-const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   session: {
     strategy: 'jwt',
     maxAge: EXP_JWT_NEXT_AUTH,

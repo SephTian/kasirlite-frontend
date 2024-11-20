@@ -2,7 +2,7 @@
 import Button from '../ui/Button';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { loginFormSchema, LoginType } from '@/_schemas/loginSchema';
+import { loginFormSchema, LoginType } from '@/lib/_schemas/loginSchema';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
@@ -28,7 +28,6 @@ const LoginForm = () => {
       console.error(result?.error);
       return;
     }
-
     router.push('/');
   };
 

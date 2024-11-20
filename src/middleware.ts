@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
+const protectedURL = ['/'];
+
 export async function middleware(request: NextRequest) {
   try {
     const response = NextResponse.next();
@@ -11,12 +13,12 @@ export async function middleware(request: NextRequest) {
     });
 
     // Pengecekan token untuk autentikasi, jika token (nextauth atau accesstoken) expire, maka akan tebuang ke login page
-    if (!token || !token.accessTokenExpires || (token.accessTokenExpires as number) * 1000 < Date.now()) {
+    if (protectedURL.includes(request.nextUrl.pathname) && (!token || !token?.accessTokenExpires || (token.accessTokenExpires as number) * 1000 < Date.now())) {
       return NextResponse.redirect(new URL('/login', request.url));
     }
 
     // jika sudah login, maka dilarang untuk ke halaman login
-    if (request.nextUrl.pathname === '/login') {
+    if (request.nextUrl.pathname === '/login' && token) {
       return NextResponse.redirect(new URL('/', request.url));
     }
 

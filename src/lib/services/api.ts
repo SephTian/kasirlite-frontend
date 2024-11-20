@@ -1,8 +1,8 @@
-import fetchAxios from '../axios';
-import { LoginData } from '@/types';
+import fetchAxios from '@/utils/axios';
+import { LoginFormData } from '../types';
 
 const api = (() => {
-  async function login({ email, password }: LoginData) {
+  async function login({ email, password }: LoginFormData) {
     const API_DATA = {
       email,
       password,
