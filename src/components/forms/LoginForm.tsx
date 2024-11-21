@@ -1,10 +1,11 @@
 'use client';
-import Button from '../ui/Button';
+
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginFormSchema, LoginType } from '@/lib/_schemas/loginSchema';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import FormButton from '../custom_ui/FormButton';
 
 const LoginForm = () => {
   const router = useRouter();
@@ -50,7 +51,7 @@ const LoginForm = () => {
           {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
         </div>
       </div>
-      <Button className="w-full bg-customOrange text-white px-3 py-2 font-bold mt-8 hover:bg-customDarkOrange">Login</Button>
+      <FormButton className="w-full bg-customOrange text-white px-3 py-2 font-bold mt-8 hover:bg-customDarkOrange">Login</FormButton>
     </form>
   );
 };

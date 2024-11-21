@@ -1,5 +1,5 @@
 'use client';
-import Button from '@/components/ui/Button';
+import FormButton from '@/components/custom_ui/FormButton';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -21,16 +21,16 @@ export default function DashboardPage() {
           Selamat Datang
         </p>
         <Link href="/setting">tes</Link>
-        <Button
+        <FormButton
           onClick={async () => {
-            //handleSession();
-            await signOut({ redirect: false });
-            router.push('/login');
+            handleSession();
+            // await signOut({ redirect: false });
+            // router.push('/login');
           }}
           className="w-full bg-customOrange text-white px-3 py-2 font-bold mt-8 hover:bg-customDarkOrange"
         >
           logout
-        </Button>
+        </FormButton>
       </div>
     </div>
   );
