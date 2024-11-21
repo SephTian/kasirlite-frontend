@@ -12,8 +12,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div>
-      <div>test ini login layout</div>
+    <div className="bg-customOrange">
       <main>{children}</main>
     </div>
   );
