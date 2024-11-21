@@ -19,7 +19,7 @@ declare module 'next-auth' {
   }
 }
 
-const EXP_JWT_NEXT_AUTH = 60 * 60 * 24 * 7; // 1 minggu
+const EXP_JWT_NEXT_AUTH = 24 * 60 * 60; // 1 hari
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -63,23 +63,40 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.accessToken = user.accessToken;
-        token.name = user.name;
-        token.email = user.email;
-        token.role = user.role;
-        const decodedJWT = await verifyJwt(user.accessToken, process.env.SECRET_KEY || '');
-        token.accessTokenExpires = decodedJWT.exp;
+    /**
+     * Fungsi ini akan terpanggil saat
+     * 1. saat login berhasil
+     * 2. setiap request API (useSession atau getSession)
+     * 3. Saat Token Dibutuhkan untuk Session
+     * 4. Ketika Token Kadaluarsa atau Perlu Refresh
+     */
+    async jwt({ token, user, account }) {
+      if (token.accessToken) {
+        const decodedJWT = await verifyJwt(token.accessToken as string, process.env.SECRET_KEY || '');
+        token.accessTokenExpires = (decodedJWT?.exp || 0) * 1000;
+      }
+
+      if (account && user) {
+        console.log('hi ini aku saat setelah login');
+        return {
+          ...token,
+          accessToken: user.accessToken,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        };
+      }
+
+      if (Date.now() < (token.accessTokenExpires as number)) {
+        console.log('**** returning previous token ******');
+        //return token;
       }
       return token;
     },
     async session({ session, token }) {
       if (token) {
         session.user = {
-          ...session.user,
           accessToken: token.accessToken as string,
-          accessTokenExpires: token.accessTokenExpires as number,
           email: token.email as string,
           name: token.name as string,
           role: token.role as string,

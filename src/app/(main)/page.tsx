@@ -1,12 +1,16 @@
 'use client';
 import Button from '@/components/ui/Button';
 import { signOut, useSession } from 'next-auth/react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 export default function DashboardPage() {
   const { data: session } = useSession();
   const router = useRouter();
-  console.log(session);
+
+  const handleSession = () => {
+    console.log(session);
+  };
 
   return (
     <div className="w-full h-screen flex justify-center items-center">
@@ -16,8 +20,10 @@ export default function DashboardPage() {
           <br />
           Selamat Datang
         </p>
+        <Link href="/setting">tes</Link>
         <Button
           onClick={async () => {
+            //handleSession();
             await signOut({ redirect: false });
             router.push('/login');
           }}
