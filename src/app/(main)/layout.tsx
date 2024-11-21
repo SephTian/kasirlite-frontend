@@ -1,3 +1,5 @@
+import { AppSidebar } from '@/components/layouts/AppSidebar';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import type { Metadata } from 'next';
 //import Providers from '@/components/layouts/Providers';
 
@@ -12,9 +14,14 @@ export default function MainLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div>
-      <div>test ini main layout</div>
-      <main>{children}</main>
-    </div>
+    <SidebarProvider>
+      <AppSidebar />
+      <main className="w-full">
+        <nav className="fixed bg-white w-full flex justify-between items-center h-[50px] px-3 shadow-md border-b-2 border-customOrange">
+          <SidebarTrigger />
+        </nav>
+        <div className="p-4 mt-[50px]">{children}</div>
+      </main>
+    </SidebarProvider>
   );
 }
