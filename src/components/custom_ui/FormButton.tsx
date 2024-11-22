@@ -8,7 +8,9 @@ type Props = {
 };
 
 export default function FormButton({ children, className, onClick }: Props) {
-  const handleClick = onClick || (() => {});
+  const handleClick = () => {
+    onClick?.();
+  };
 
   return (
     <button onClick={handleClick} className={`${className} text-center flex gap-2 items-center justify-center rounded-md`}>
