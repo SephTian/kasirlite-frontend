@@ -5,12 +5,13 @@ import { HiDocumentText } from 'react-icons/hi';
 import { PiPencilSimpleLineFill } from 'react-icons/pi';
 import { FaUsers } from 'react-icons/fa';
 import { MdSettings } from 'react-icons/md';
+import Link from 'next/link';
 
 // Menu items.
 const primary = [
   {
     title: 'Laporan',
-    url: '#',
+    url: '/',
     icon: MdSpaceDashboard,
   },
 ];
@@ -18,7 +19,7 @@ const primary = [
 const order = [
   {
     title: 'Pesan',
-    url: '#',
+    url: '/order',
     icon: PiPencilSimpleLineFill,
   },
   {
@@ -41,7 +42,7 @@ const setting = [
   },
   {
     title: 'Pengaturan',
-    url: '#',
+    url: '/setting',
     icon: MdSettings,
   },
 ];
@@ -64,10 +65,10 @@ export function AppSidebar() {
               {primary.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -83,10 +84,10 @@ export function AppSidebar() {
               {order.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -102,10 +103,10 @@ export function AppSidebar() {
               {setting.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
