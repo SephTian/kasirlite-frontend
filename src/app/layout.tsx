@@ -1,6 +1,12 @@
 import type { Metadata } from 'next';
 import '@/styles/globals.css';
 import Providers from '@/components/layouts/Providers';
+import { Poppins } from 'next/font/google';
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'], // Sesuaikan dengan kebutuhan
+});
 
 export const metadata: Metadata = {
   title: 'KasirLite',
@@ -14,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`antialiased`}>
+      <body className={poppins.className}>
         <Providers>{children}</Providers>
       </body>
     </html>
