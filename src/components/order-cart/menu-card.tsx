@@ -5,7 +5,7 @@ type Props = food & {
   onClick?: (param: food) => void;
 };
 
-function ItemCard({ id, image, name, price, discount, isAdditional, menuType, menuTypeId, disabled, onClick }: Props) {
+function MenuCard({ id, image, name, price, discount, isAdditional, menuType, menuTypeId, disabled, onClick }: Props) {
   const handleClick = () => {
     if (!disabled) {
       onClick?.({ id, image, name, menuType, menuTypeId, isAdditional, price, discount });
@@ -35,4 +35,4 @@ function ItemCard({ id, image, name, price, discount, isAdditional, menuType, me
   );
 }
 
-export default ItemCard;
+export default MenuCard;

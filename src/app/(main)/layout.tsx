@@ -1,4 +1,4 @@
-import { AppSidebar } from '@/components/layouts/AppSidebar';
+import { AppSidebar } from '@/components/layouts/app-sidebar';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import type { Metadata } from 'next';
 //import Providers from '@/components/layouts/Providers';

@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { loginFormSchema, LoginType } from '@/lib/_schemas/loginSchema';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import Button from '../custom_ui/Button';
+import Button from '../custom-ui/button';
 
 const LoginForm = () => {
   const router = useRouter();

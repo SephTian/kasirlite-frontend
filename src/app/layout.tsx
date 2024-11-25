@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import '@/styles/globals.css';
-import Providers from '@/components/layouts/Providers';
+import Providers from '@/components/layouts/providers';
 import { Poppins } from 'next/font/google';
 
 const poppins = Poppins({
