@@ -1,32 +1,26 @@
-import { food } from '@/lib/types';
+import { menu } from '@/lib/types';
 import React from 'react';
-type Props = food & {
-  disabled: boolean;
-  onClick?: (param: food) => void;
+type Props = menu & {
+  onClick?: (param: Omit<menu, 'isAdditional' | 'disabled'>) => void;
 };
 
-function MenuCard({ id, image, name, price, discount, isAdditional, menuType, menuTypeId, disabled, onClick }: Props) {
+export default function MenuCard({ id, image, name, price, discount, hasAdditional, menuType, menuTypeId, disabled, onClick }: Props) {
   const handleClick = () => {
     if (!disabled) {
-      onClick?.({ id, image, name, menuType, menuTypeId, isAdditional, price, discount });
+      onClick?.({ id, image, name, menuType, menuTypeId, hasAdditional, price, discount });
     }
   };
 
   return (
-    <div
-      className={`transition-transform relative transform duration-100 rounded-md bg-gray-200 p-3 ${
-        disabled ? 'cursor-not-allowed after:w-full after:bg-white after:h-full after:top-0' : 'cursor-pointer hover:scale-105'
-      }`}
-      onClick={handleClick}
-    >
+    <div className={`transition-transform relative transform duration-100 rounded-md bg-gray-200 p-1 ${disabled ? 'cursor-not-allowed ' : 'cursor-pointer hover:scale-105'}`} onClick={handleClick}>
       <div className="space-y-1">
         <div className="w-full rounded-sm aspect-video bg-gray-300">{/* TODO: PASANG IMAGE */}</div>
         <div className="">
-          <p className="font-bold truncate">
+          <p className="font-bold truncate text-xs">
             {name} - {id} - {image}
           </p>
           <p className="font-medium text-xs line-through text-gray-500">Rp.{price}</p>
-          <p className="font-medium">Rp.{price - discount}</p>
+          <p className="font-medium text-xs">Rp.{price - discount}</p>
         </div>
       </div>
 
@@ -34,5 +28,3 @@ function MenuCard({ id, image, name, price, discount, isAdditional, menuType, me
     </div>
   );
 }
-
-export default MenuCard;

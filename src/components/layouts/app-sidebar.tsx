@@ -27,14 +27,14 @@ const order = [
     url: '#',
     icon: HiDocumentText,
   },
-];
-
-const setting = [
   {
     title: 'Daftar Makanan',
     url: '#',
     icon: MdFastfood,
   },
+];
+
+const setting = [
   {
     title: 'Daftar Pengguna',
     url: '#',
