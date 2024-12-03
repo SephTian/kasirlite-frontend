@@ -2,19 +2,23 @@
 import MenuCard from '@/components/order-cart/menu-card';
 import MenuTypeFilter from './menu-type-filter';
 import { Input } from '@/components/ui/input';
-import { menu, menuCart } from '@/lib/types';
+import { menu } from '@/lib/types';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, Dispatch, SetStateAction, useCallback, useMemo } from 'react';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/lib/states';
+import { addCartItem, setSelectedMenu } from '@/lib/states/slices/cartSlice';
 
 type Props = {
   menu: menu[];
-  setCart: Dispatch<SetStateAction<menuCart[]>>;
-  handleAddModal: (param: number) => void;
-  cart: menuCart[];
+  setModalType: Dispatch<SetStateAction<'add' | 'edit'>>;
+  toggleModal: () => void;
 };
 
-export default function OrderMenuList({ menu, cart, setCart, handleAddModal }: Props) {
+export default function OrderMenuList({ menu, setModalType, toggleModal }: Props) {
+  const dispatch: AppDispatch = useDispatch();
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const menuTypeParams = searchParams.get('type')?.toLowerCase() || '';
@@ -35,30 +39,12 @@ export default function OrderMenuList({ menu, cart, setCart, handleAddModal }: P
     router.replace(`?${createSearchQuery('keyword', e.target.value)}`, { scroll: false });
   };
 
-  const handleAddCart = (param: Omit<menu, 'isAdditional' | 'disabled'>) => {
-    handleAddModal(param.id);
-    let isInCart = false;
-    const currentCart = cart.map((item) => {
-      // Checking if item in cart, so the quantity will be incremented
-      if (item.menu.id === param.id) {
-        isInCart = true;
-        return { ...item, quantity: item.quantity + 1 };
-      }
-      return item;
-    });
-
-    // If item not in cart then we add new item
-    if (!isInCart) {
-      const object: menuCart = {
-        menu: param,
-        quantity: 1,
-        additional: [],
-      };
-      setCart((prev) => [...prev, object]);
-      return;
-    }
-
-    setCart(currentCart);
+  // Add cart to
+  const handleAddCart = (inputMenu: Omit<menu, 'disabled'>) => {
+    dispatch(setSelectedMenu({ menu: inputMenu, quantity: 1 }));
+    dispatch(addCartItem(inputMenu));
+    setModalType('add');
+    toggleModal();
   };
 
   // Getting type from item data

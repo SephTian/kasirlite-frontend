@@ -1,20 +1,36 @@
 'use client';
-import { menuCart } from '@/lib/types';
+
 import React, { Dispatch, SetStateAction, useMemo } from 'react';
 import Button from '../custom-ui/button';
 import CartCard from './cart-card';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/lib/states';
+import { setSelectedMenu } from '@/lib/states/slices/cartSlice';
 
 type Props = {
-  cart: menuCart[];
-  setCart: Dispatch<SetStateAction<menuCart[]>>;
-  handleEditModal: (param: number) => void;
+  setModalType: Dispatch<SetStateAction<'add' | 'edit'>>;
+  toggleModal: () => void;
 };
 
-export default function OrderReceipt({ cart, setCart, handleEditModal }: Props) {
+export default function OrderReceipt({ setModalType, toggleModal }: Props) {
+  const { cart } = useSelector((state: RootState) => state.cart);
+  const dispatch: AppDispatch = useDispatch();
+
+  const handleEditModal = (index: number) => {
+    // TODO: find item by index di cart
+    // TODO: set di selected item
+    // TODO: after that make a button to save the current state
+    // TODO: clear selected state
+
+    dispatch(setSelectedMenu(cart[index]));
+    setModalType('edit');
+    toggleModal();
+  };
+
+  // Count total price from cart
   const totalPrice: number = useMemo(
     () =>
       cart.reduce<number>((totalPrice, item) => {
-        console.log('hi');
         return (totalPrice += (item.menu.price - item.menu.discount) * item.quantity);
       }, 0),
     [cart]
@@ -25,7 +41,7 @@ export default function OrderReceipt({ cart, setCart, handleEditModal }: Props) 
       <div className="text-center font-semibold mb-4">Transaksi</div>
       <div className="space-y-2 overflow-y-scroll h-[500px] border border-gray-300 rounded-md p-2">
         {cart.map((item, idx) => {
-          return <CartCard key={idx} cartIndex={idx} cartItem={item} cart={cart} setCart={setCart} onEditModal={handleEditModal} />;
+          return <CartCard key={idx} onClick={() => handleEditModal(idx)} cartItem={item} />;
         })}
       </div>
       <div className="flex justify-between items-center">

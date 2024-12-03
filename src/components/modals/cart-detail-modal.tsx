@@ -1,22 +1,23 @@
-import React, { useState } from 'react';
+import { RootState } from '@/lib/states';
 import ModalWrapper from '../custom-ui/modal-wrapper';
-import { food, foodCart } from '@/lib/types';
+import { useSelector } from 'react-redux';
 
 type Props = {
-  selectedMenu: foodCart;
-  additionalMenu: food;
-  handleCart: () => void;
+  isOpen: boolean;
+  closeModal: () => void;
+  modalType: 'add' | 'edit'; // ini untuk aksi saat simpan barang dalam cart
 };
 
-export default function CartDetailModal({ selectedMenu, food, handleCart }: Props) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [additional, setAdditional] = useState(selectedMenu.additional);
+export default function CartDetailModal({ isOpen, closeModal, modalType }: Props) {
+  const { selectedMenu } = useSelector((state: RootState) => state.cart);
 
+  // TODO: BUAT FUNGSI ADD DAN EDIT DENGAN CONDITIONAL TYPE
   return (
-    <ModalWrapper isOpen={isOpen}>
+    <ModalWrapper isOpen={isOpen} closeModal={closeModal}>
       <div className="p-3 bg-white">
-        <p>{selectedMenu.food.name}</p>
-        <p>{selectedMenu.quantity}</p>
+        <p>{selectedMenu?.menu.name}</p>
+        <p>{selectedMenu?.quantity}</p>
+        <p>{modalType}</p>
       </div>
     </ModalWrapper>
   );

@@ -1,16 +1,12 @@
 import { menuCart } from '@/lib/types';
-import React, { Dispatch, SetStateAction } from 'react';
-import Button from '../custom-ui/button';
+import React from 'react';
 
 type Props = {
   cartItem: menuCart;
-  cartIndex: number;
-  cart: menuCart[];
-  setCart: Dispatch<SetStateAction<menuCart[]>>;
-  onEditModal: (param: number) => void;
+  onClick?: () => void;
 };
 
-export default function CartCard({ cartItem, cartIndex, cart, setCart, onEditModal }: Props) {
+export default function CartCard({ cartItem, onClick }: Props) {
   // const handleDecrementItem = (id: number) => {
   //   let isZero = false;
   //   const currentCart = cart.map((item) => {
@@ -61,7 +57,7 @@ export default function CartCard({ cartItem, cartIndex, cart, setCart, onEditMod
   //   setCart(currentCart);
   // };
   return (
-    <div className="rounded-sm overflow-hidden cursor-pointer" onClick={() => onEditModal(cartIndex)}>
+    <div className={`rounded-sm overflow-hidden ${onClick ? 'cursor-pointer' : 'cursor-default'}`} onClick={onClick}>
       <div className="flex items-center justify-between bg-gray-200 p-3 rounded-t-sm gap-1">
         <p className="text-xs font-semibold truncate">{cartItem.menu.name}</p>
         <p className="text-xs font-semibold text-gray-600 text-nowrap">
