@@ -4,15 +4,13 @@ export type menu = {
   name: string;
   menuType: string;
   menuTypeId: string;
-  hasAdditional: boolean;
-  isAdditional: boolean;
   price: number;
   discount: number;
   disabled: boolean;
 };
 
 export type menuCart = {
-  menu: Omit<menu, 'isAdditional' | 'disabled'>;
+  menu: Omit<menu, 'disabled'>;
   quantity: number;
-  additional: menu[];
+  // additional: menu[];
 };
