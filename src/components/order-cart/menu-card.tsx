@@ -4,10 +4,10 @@ type Props = menu & {
   onClick?: (param: Omit<menu, 'isAdditional' | 'disabled'>) => void;
 };
 
-export default function MenuCard({ id, image, name, price, discount, hasAdditional, menuType, menuTypeId, disabled, onClick }: Props) {
+export default function MenuCard({ id, image, name, price, discount, menuType, menuTypeId, disabled, onClick }: Props) {
   const handleClick = () => {
     if (!disabled) {
-      onClick?.({ id, image, name, menuType, menuTypeId, hasAdditional, price, discount });
+      onClick?.({ id, image, name, menuType, menuTypeId, price, discount });
     }
   };
 

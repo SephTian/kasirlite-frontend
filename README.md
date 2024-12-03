@@ -29,3 +29,10 @@ CATATAN:
 NOTE:
 kalau pake useSession() harus destruktur data dlu.
 kalau pake getServerSession(authOption) langsung datanya.
+
+NOTE:
+Typescript perlu dibuat type terpisah kalau:
+
+1. Untuk handle parameter saat menambah form
+2. Untuk sebuah useState array of object
+3.

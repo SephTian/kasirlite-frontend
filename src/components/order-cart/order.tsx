@@ -1,5 +1,5 @@
 'use client';
-import OrderMenuList from './order-menu-list';
+import OrderMenu from './order-menu';
 import { menu } from '@/lib/types';
 import OrderReceipt from './order-receipt';
 import CartDetailModal from '../modals/cart-detail-modal';
@@ -25,7 +25,7 @@ export default function Order({ menu }: Props) {
   return (
     <>
       <div className="sm:col-span-3 lg:col-span-4">
-        <OrderMenuList setModalType={setModalType} toggleModal={toggleModal} menu={menu} />
+        <OrderMenu setModalType={setModalType} toggleModal={toggleModal} menu={menu} />
       </div>
       <div className="sm:col-span-3 lg:col-span-2">
         <OrderReceipt setModalType={setModalType} toggleModal={toggleModal} />

@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { ChangeEvent, Dispatch, SetStateAction, useCallback, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/lib/states';
-import { addCartItem, setSelectedMenu } from '@/lib/states/slices/cartSlice';
+import { setSelectedMenu } from '@/lib/states/slices/cartSlice';
 
 type Props = {
   menu: menu[];
@@ -16,7 +16,7 @@ type Props = {
   toggleModal: () => void;
 };
 
-export default function OrderMenuList({ menu, setModalType, toggleModal }: Props) {
+export default function OrderMenu({ menu, setModalType, toggleModal }: Props) {
   const dispatch: AppDispatch = useDispatch();
 
   const router = useRouter();
@@ -41,8 +41,7 @@ export default function OrderMenuList({ menu, setModalType, toggleModal }: Props
 
   // Add cart to
   const handleAddCart = (inputMenu: Omit<menu, 'disabled'>) => {
-    dispatch(setSelectedMenu({ menu: inputMenu, quantity: 1 }));
-    dispatch(addCartItem(inputMenu));
+    dispatch(setSelectedMenu({ menu: inputMenu, quantity: 1, menuIndex: null }));
     setModalType('add');
     toggleModal();
   };

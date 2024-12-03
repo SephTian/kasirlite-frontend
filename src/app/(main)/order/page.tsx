@@ -1,7 +1,6 @@
 import Order from '@/components/order-cart/order';
 import api from '@/lib/services/api';
 
-export const revalidate = 0;
 export default async function OrderPage() {
   const menu = await api.getMenu();
   return (
