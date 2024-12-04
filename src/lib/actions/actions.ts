@@ -13,3 +13,7 @@ export async function loginAction({ email, password }: LoginFormData) {
 
   return data.user;
 }
+
+export async function testquery({ type }: { type: string }) {
+  console.log(type);
+}

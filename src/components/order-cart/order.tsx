@@ -1,13 +1,13 @@
 'use client';
 import OrderMenu from './order-menu';
-import { menu } from '@/lib/types';
+import { Menu } from '@/lib/types';
 import OrderReceipt from './order-receipt';
 import CartDetailModal from '../modals/cart-detail-modal';
 import useModal from '@/hooks/useModal';
 import { useState } from 'react';
 
 type Props = {
-  menu: menu[];
+  menu: Menu[];
 };
 
 export default function Order({ menu }: Props) {

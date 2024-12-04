@@ -1,9 +1,9 @@
-import { menuCart } from '@/lib/types';
+import { MenuCart } from '@/lib/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type cartState = {
-  cart: menuCart[];
-  selectedMenu: (menuCart & { menuIndex: number | null }) | null;
+  cart: MenuCart[];
+  selectedMenu: (MenuCart & { menuIndex: number | null }) | null;
 };
 
 const initialState: cartState = {
@@ -18,7 +18,7 @@ const cartSlice = createSlice({
     setSelectedMenu: (state, action: PayloadAction<typeof state.selectedMenu>) => {
       state.selectedMenu = action.payload;
     },
-    addCartItem: (state, action: PayloadAction<menuCart>) => {
+    addCartItem: (state, action: PayloadAction<MenuCart>) => {
       let isInCart = false;
       const currentCart = state.cart.map((item) => {
         // Checking if item in cart, so the quantity will be incremented

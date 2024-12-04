@@ -1,4 +1,4 @@
-export type menu = {
+export type Menu = {
   id: number;
   image: string;
   name: string;
@@ -9,8 +9,8 @@ export type menu = {
   disabled: boolean;
 };
 
-export type menuCart = {
-  menu: Omit<menu, 'disabled'>;
+export type MenuCart = {
+  menu: Omit<Menu, 'disabled'>;
   quantity: number;
   // additional: menu[];
 };

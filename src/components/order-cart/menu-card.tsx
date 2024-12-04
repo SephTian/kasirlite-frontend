@@ -1,7 +1,7 @@
-import { menu } from '@/lib/types';
+import { Menu } from '@/lib/types';
 import React from 'react';
-type Props = menu & {
-  onClick?: (param: Omit<menu, 'isAdditional' | 'disabled'>) => void;
+type Props = Menu & {
+  onClick?: (param: Omit<Menu, 'isAdditional' | 'disabled'>) => void;
 };
 
 export default function MenuCard({ id, image, name, price, discount, menuType, menuTypeId, disabled, onClick }: Props) {
