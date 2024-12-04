@@ -1,8 +1,9 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { ChangeEvent, useCallback } from 'react';
+import { useCallback } from 'react';
 import { Input } from '../ui/input';
+import { useDebouncedCallback } from 'use-debounce';
 
 export default function MenuQueryFilter() {
   const router = useRouter();
@@ -20,18 +21,20 @@ export default function MenuQueryFilter() {
   );
 
   // Set keyword params on URL
-  const handleKeyword = (e: ChangeEvent<HTMLInputElement>) => {
-    router.replace(`?${createSearchQuery('keyword', e.target.value)}`, { scroll: false });
-  };
+  const handleKeyword = useDebouncedCallback((value) => {
+    router.replace(`?${createSearchQuery('keyword', value)}`, { scroll: false });
+  }, 500);
 
   return (
     <div className="rounded-md space-y-1 w-full">
       <Input
-        onChange={handleKeyword}
-        value={menuKeywordParams}
-        className="w-full border-2 border-customOrange bg-gray-100 focus-visible:ring-0 focus-visible:outline-none"
+        onChange={(e) => {
+          handleKeyword(e.target.value);
+        }}
+        defaultValue={menuKeywordParams}
+        className="w-full border-2 border-customOrange bg-white focus-visible:ring-0 focus-visible:outline-none"
         type="text"
-        placeholder="Cari makanan...."
+        placeholder="Cari menu..."
         id="searchItem"
       />
     </div>
