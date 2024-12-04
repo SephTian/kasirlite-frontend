@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/lib/states';
 import { setSelectedMenu } from '@/lib/states/slices/cartSlice';
 import ReceiptTable from './receipt-table';
+import { signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   setModalType: Dispatch<SetStateAction<'add' | 'edit'>>;
@@ -13,6 +15,7 @@ type Props = {
 };
 
 export default function OrderReceipt({ setModalType, toggleModal }: Props) {
+  const router = useRouter();
   const { cart } = useSelector((state: RootState) => state.cart);
   const dispatch: AppDispatch = useDispatch();
 
@@ -32,7 +35,7 @@ export default function OrderReceipt({ setModalType, toggleModal }: Props) {
   );
 
   return (
-    <div className="min-w-[100px] h-full w-full px-6 py-6 bg-white border border-gray-200 rounded-lg shadow-lg space-y-2">
+    <div className="min-w-[100px] h-full w-full px-6 py-6 space-y-2 bg-white rounded-lg shadow-lg">
       <div className="text-center font-semibold mb-4">Transaksi</div>
       <ReceiptTable cart={cart} handleEditModal={handleEditModal} />
       <div className="flex justify-between items-center">
@@ -43,13 +46,12 @@ export default function OrderReceipt({ setModalType, toggleModal }: Props) {
         <p className="text-sm font-semibold">Total Harga</p>
         <p className="text-sm font-semibold">Rp.{totalPrice}</p>
       </div>
-      {/* <Link href="/setting">tes</Link> */}
       <Button
         disabled={cart.length === 0}
         onClick={async () => {
           ///handleSession();
-          // await signOut({ redirect: false });
-          // router.push('/login');
+          await signOut({ redirect: false });
+          router.push('/login');
         }}
         className="w-full bg-customOrange text-white px-3 py-2 font-semibold hover:bg-customDarkOrange disabled:bg-orange-300"
       >

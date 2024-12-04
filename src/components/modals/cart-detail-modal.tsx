@@ -5,6 +5,7 @@ import { IoCloseCircleOutline } from 'react-icons/io5';
 import { Button } from '../ui/button';
 import { useEffect, useState } from 'react';
 import { addCartItem, deleteCartItem, updateCartItem } from '@/lib/states/slices/cartSlice';
+import { useToast } from '@/hooks/use-toast';
 
 type Props = {
   isOpen: boolean;
@@ -14,6 +15,7 @@ type Props = {
 
 export default function CartDetailModal({ isOpen, closeModal, modalType }: Props) {
   const dispatch: AppDispatch = useDispatch();
+  const { toast } = useToast();
   const { selectedMenu } = useSelector((state: RootState) => state.cart);
   const [currentMenu, setCurrentMenu] = useState<typeof selectedMenu | undefined>();
 
@@ -85,6 +87,11 @@ export default function CartDetailModal({ isOpen, closeModal, modalType }: Props
                 onClick={() => {
                   if (currentMenu) {
                     dispatch(addCartItem(currentMenu));
+                    toast({
+                      variant: 'informative',
+                      title: 'Keranjang Berubah',
+                      description: 'Menu berhasil ditambahkan',
+                    });
                   }
                   closeModal();
                 }}
@@ -99,6 +106,11 @@ export default function CartDetailModal({ isOpen, closeModal, modalType }: Props
                   onClick={() => {
                     if (currentMenu && currentMenu.menuIndex !== null) {
                       dispatch(deleteCartItem({ index: currentMenu.menuIndex }));
+                      toast({
+                        variant: 'informative',
+                        title: 'Keranjang Berubah',
+                        description: 'Menu berhasil dihapus',
+                      });
                       closeModal();
                     }
                   }}
@@ -110,6 +122,11 @@ export default function CartDetailModal({ isOpen, closeModal, modalType }: Props
                   onClick={() => {
                     if (currentMenu && currentMenu.menuIndex !== null) {
                       dispatch(updateCartItem({ index: currentMenu.menuIndex, quantity: currentMenu.quantity }));
+                      toast({
+                        variant: 'informative',
+                        title: 'Keranjang Berubah',
+                        description: 'Menu berhasil diubah',
+                      });
                       closeModal();
                     }
                   }}
