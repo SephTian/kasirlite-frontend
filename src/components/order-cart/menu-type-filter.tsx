@@ -26,7 +26,7 @@ export default function MenuTypeFilter({ menuTypes, selectedType }: Props) {
     <div className="flex gap-3 overflow-x-scroll">
       {/* for all type */}
       <Link href={`?${createSearchQuery('type', '')}`} replace>
-        <div className={`border border-customOrange rounded-sm ${selectedType === '' ? 'bg-customOrange' : 'bg-white'} p-2 text-xs font-semibold cursor-pointer hover:bg-customOrange text-nowrap`}>
+        <div className={`border border-customOrange rounded-sm ${selectedType === '' ? 'bg-customOrange' : 'bg-[#fdfdfd]'} p-2 text-xs font-semibold cursor-pointer hover:bg-customOrange text-nowrap`}>
           Semua
         </div>
       </Link>
@@ -35,7 +35,7 @@ export default function MenuTypeFilter({ menuTypes, selectedType }: Props) {
         const isSelected = item.toLocaleLowerCase() === selectedType;
         return (
           <Link key={key} href={`?${createSearchQuery('type', selectedType === item ? '' : item)}`} replace>
-            <div className={`border border-customOrange rounded-sm ${isSelected ? 'bg-customOrange' : 'bg-white'} p-2 text-xs font-semibold cursor-pointer hover:bg-customOrange text-nowrap`}>
+            <div className={`border border-customOrange rounded-sm ${isSelected ? 'bg-customOrange' : 'bg-[#fdfdfd]'} p-2 text-xs font-semibold cursor-pointer hover:bg-customOrange text-nowrap`}>
               {item}
             </div>
           </Link>

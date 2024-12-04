@@ -51,7 +51,7 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader>
-        <div className="w-full h-[30px] bg-white rounded-sm flex items-center justify-center">
+        <div className="w-full h-[30px] bg-secondary rounded-sm flex items-center justify-center">
           <p>KasirLite 1.0</p>
         </div>
       </SidebarHeader>

@@ -17,7 +17,7 @@ export default function MainLayout({
     <SidebarProvider>
       <AppSidebar />
       <main className="w-full">
-        <nav className="fixed bg-white w-full flex justify-between items-center h-[50px] px-3 shadow-md border-b-2 border-customOrange z-10">
+        <nav className="fixed w-full flex justify-between items-center h-[50px] px-3 shadow-md border-b-2 border-customOrange bg-navbar z-10">
           <SidebarTrigger />
         </nav>
         <div className="p-4 mt-[50px]">{children}</div>

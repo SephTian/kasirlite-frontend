@@ -50,7 +50,7 @@ export default function CartDetailModal({ isOpen, closeModal, modalType }: Props
 
   return (
     <ModalWrapper isOpen={isOpen} closeModal={closeModal}>
-      <div className="p-3 min-w-[250px] bg-white rounded-sm">
+      <div className="p-3 min-w-[250px] bg-secondary rounded-sm">
         <div className="flex w-full items-center justify-between mb-3">
           <p className="text-md font-bold">{modalType === 'add' ? 'Tambah' : 'Ubah'}</p>
           <IoCloseCircleOutline className="w-6 h-6 cursor-pointer" onClick={closeModal} />
@@ -83,7 +83,7 @@ export default function CartDetailModal({ isOpen, closeModal, modalType }: Props
           <div className="flex gap-2 mt-6 w-full">
             {modalType === 'add' && (
               <Button
-                className="w-full bg-customOrange hover:bg-customDarkOrange"
+                className="w-full bg-customOrange text-white hover:bg-customDarkOrange text-secondary"
                 onClick={() => {
                   if (currentMenu) {
                     dispatch(addCartItem(currentMenu));
@@ -102,7 +102,7 @@ export default function CartDetailModal({ isOpen, closeModal, modalType }: Props
             {modalType === 'edit' && (
               <>
                 <Button
-                  className="w-full bg-red-500 hover:bg-red-800"
+                  className="w-full bg-red-500 text-white hover:bg-red-800"
                   onClick={() => {
                     if (currentMenu && currentMenu.menuIndex !== null) {
                       dispatch(deleteCartItem({ index: currentMenu.menuIndex }));
@@ -118,7 +118,7 @@ export default function CartDetailModal({ isOpen, closeModal, modalType }: Props
                   Hapus
                 </Button>
                 <Button
-                  className="w-full bg-customOrange hover:bg-customDarkOrange"
+                  className="w-full bg-customOrange text-white hover:bg-customDarkOrange"
                   onClick={() => {
                     if (currentMenu && currentMenu.menuIndex !== null) {
                       dispatch(updateCartItem({ index: currentMenu.menuIndex, quantity: currentMenu.quantity }));

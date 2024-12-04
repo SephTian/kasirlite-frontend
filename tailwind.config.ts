@@ -1,5 +1,6 @@
 import type { Config } from 'tailwindcss';
 
+// disini hanya untuk pengaturan shadcn, untuk yang di dalam menggunkan tailwind langsung
 const config: Config = {
   darkMode: ['class'],
   content: ['./src/pages/**/*.{js,ts,jsx,tsx,mdx}', './src/components/**/*.{js,ts,jsx,tsx,mdx}', './src/app/**/*.{js,ts,jsx,tsx,mdx}'],
@@ -40,10 +41,6 @@ const config: Config = {
           DEFAULT: 'hsl(var(--destructive))',
           foreground: 'hsl(var(--destructive-foreground))',
         },
-        // constructive: {
-        //   DEFAULT: 'hsl(var(--constructive))',
-        //   foreground: 'hsl(var(--constructive-foreground))',
-        // },
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
@@ -63,6 +60,9 @@ const config: Config = {
           'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
           border: 'hsl(var(--sidebar-border))',
           ring: 'hsl(var(--sidebar-ring))',
+        },
+        navbar: {
+          DEFAULT: 'hsl(var(--navbar-background))',
         },
       },
       borderRadius: {

@@ -35,7 +35,7 @@ export default function OrderReceipt({ setModalType, toggleModal }: Props) {
   );
 
   return (
-    <div className="min-w-[100px] h-full w-full px-6 py-6 space-y-2 bg-white rounded-lg shadow-lg">
+    <div className="min-w-[100px] h-full w-full px-6 py-6 space-y-2 bg-[#fdfdfd] rounded-lg shadow-lg border">
       <div className="text-center font-semibold mb-4">Transaksi</div>
       <ReceiptTable cart={cart} handleEditModal={handleEditModal} />
       <div className="flex justify-between items-center">
@@ -49,7 +49,6 @@ export default function OrderReceipt({ setModalType, toggleModal }: Props) {
       <Button
         disabled={cart.length === 0}
         onClick={async () => {
-          ///handleSession();
           await signOut({ redirect: false });
           router.push('/login');
         }}

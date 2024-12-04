@@ -26,7 +26,14 @@ export default function MenuQueryFilter() {
 
   return (
     <div className="rounded-md space-y-1 w-full">
-      <Input onChange={handleKeyword} value={menuKeywordParams} className="w-full border-2 border-customOrange bg-gray-100" type="text" placeholder="Cari makanan...." id="searchItem" />
+      <Input
+        onChange={handleKeyword}
+        value={menuKeywordParams}
+        className="w-full border-2 border-customOrange bg-gray-100 focus-visible:ring-0 focus-visible:outline-none"
+        type="text"
+        placeholder="Cari makanan...."
+        id="searchItem"
+      />
     </div>
   );
 }

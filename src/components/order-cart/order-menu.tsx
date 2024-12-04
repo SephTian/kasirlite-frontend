@@ -44,7 +44,7 @@ export default function OrderMenu({ menu, setModalType, toggleModal }: Props) {
   });
 
   return (
-    <div className="space-y-4 p-6 h-full bg-white rounded-lg shadow-lg">
+    <div className="space-y-4 p-6 h-full bg-[#fdfdfd] rounded-lg shadow-lg border">
       <MenuQueryFilter />
       <MenuTypeFilter menuTypes={menuTypes} selectedType={menuTypeParams} />
       <div className="space-y-4">
