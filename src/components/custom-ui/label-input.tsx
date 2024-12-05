@@ -4,11 +4,10 @@ import { Input } from '../ui/input';
 type Props = {
   label: string;
   type: string;
-  placeholder: string;
   isError: boolean;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
-const LabelInput = forwardRef<HTMLInputElement, Props>(({ label, placeholder, type, name, isError, ...props }, ref) => {
+const LabelInput = forwardRef<HTMLInputElement, Props>(({ label, type, name, isError, ...props }, ref) => {
   return (
     <div>
       <label htmlFor={name} className="block text-sm mb-1">
@@ -19,9 +18,10 @@ const LabelInput = forwardRef<HTMLInputElement, Props>(({ label, placeholder, ty
         id={name}
         name={name}
         type={type}
-        placeholder={placeholder}
         {...props}
-        className={`border-2 ${isError ? 'border-red-600' : 'border-customOrange'} w-full bg-white rounded-md shadow-inner text-md focus-visible:ring-0 focus-visible:outline-none`}
+        className={`border-2 ${
+          isError ? 'border-red-600' : 'border-customOrange'
+        } w-full bg-white rounded-md shadow-inner text-md focus-visible:ring-0 focus-visible:outline-none read-only:bg-slate-200`}
       />
     </div>
   );
