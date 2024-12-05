@@ -44,17 +44,27 @@ export default function OrderMenu({ menu, setModalType, toggleModal }: Props) {
   });
 
   return (
-    <div className="space-y-4 p-6 h-full bg-[#fdfdfd] rounded-lg shadow-lg border">
-      <MenuQueryFilter />
-      <MenuTypeFilter menuTypes={menuTypes} selectedType={menuTypeParams} />
+    <div className="p-6 h-full flex flex-col justify-between gap-3">
       <div className="space-y-4">
+        <MenuQueryFilter />
+        <MenuTypeFilter menuTypes={menuTypes} selectedType={menuTypeParams} />
         <h1 className="font-semibold">Daftar makanan:</h1>
         <div className="grid grid-cols-3 lg:grid-cols-5 gap-3">
           {filteredItem.map((item) => {
             return <MenuCard onClick={handleAddCart} key={item.id} {...item} />;
           })}
+          {filteredItem.map((item) => {
+            return <MenuCard onClick={handleAddCart} key={item.id} {...item} />;
+          })}
+          {filteredItem.map((item) => {
+            return <MenuCard onClick={handleAddCart} key={item.id} {...item} />;
+          })}
+          {filteredItem.map((item) => {
+            return <MenuCard onClick={handleAddCart} key={item.id} {...item} />;
+          })}
         </div>
       </div>
+      <div className="font-lg font-bold">TODO: Pagination here later</div>
     </div>
   );
 }
