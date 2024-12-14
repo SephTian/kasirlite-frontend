@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { loginFormSchema, LoginType } from '@/lib/schemas/loginSchema';
+import { loginFormSchema, LoginFormType } from '@/lib/schemas/loginSchema';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Button from '../custom-ui/button';
@@ -16,11 +16,11 @@ const LoginForm = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<LoginType>({
+  } = useForm<LoginFormType>({
     resolver: zodResolver(loginFormSchema),
   });
 
-  const handleLogin = async (data: LoginType) => {
+  const handleLogin = async (data: LoginFormType) => {
     const { email, password } = data;
 
     const result = await signIn('credentials', {
