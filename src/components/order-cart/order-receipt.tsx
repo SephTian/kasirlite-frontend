@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/lib/states';
 import { setSelectedMenu, setTotalPrice } from '@/lib/states/slices/cartSlice';
 import ReceiptTable from './receipt-table';
+import { formatRupiah } from '@/utils';
 
 type Props = {
   setCartModalType: Dispatch<SetStateAction<'add' | 'edit'>>;
@@ -16,6 +17,8 @@ type Props = {
 export default function OrderReceipt({ setCartModalType, toggleCartModal, toggleReceiptModal }: Props) {
   const { cart, totalPrice } = useSelector((state: RootState) => state.cart);
   const dispatch: AppDispatch = useDispatch();
+
+  // !! INI TAX MASIH HARDCODE
   const TAX: number = 0.12;
 
   const handleEditModal = (index: number) => {
@@ -41,15 +44,15 @@ export default function OrderReceipt({ setCartModalType, toggleCartModal, toggle
       <div className="px-2 space-y-2">
         <div className="flex justify-between items-center text-gray-500">
           <p className="text-xs font-semibold">Pajak</p>
-          <p className="text-xs font-semibold">Rp.{totalPrice * TAX}</p>
+          <p className="text-xs font-semibold">{formatRupiah(totalPrice * TAX)}</p>
         </div>
         <div className="flex justify-between items-center text-gray-500">
           <p className="text-xs font-semibold">Total</p>
-          <p className="text-xs font-semibold">Rp.{totalPrice}</p>
+          <p className="text-xs font-semibold">{formatRupiah(totalPrice)}</p>
         </div>
         <div className="flex justify-between items-center">
           <p className="text-sm font-semibold ">Harga Total</p>
-          <p className="text-sm font-semibold">Rp.{totalPrice + totalPrice * TAX}</p>
+          <p className="text-sm font-semibold">{formatRupiah(totalPrice + totalPrice * TAX)}</p>
         </div>
       </div>
 
