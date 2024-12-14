@@ -1,16 +1,16 @@
 export type Menu = {
   id: number;
-  image: string;
+  image: string; //no
   name: string;
-  menuType: string;
-  menuTypeId: string;
+  menuType: string; //no
+  menuTypeId: string; //no
   price: number;
   discount: number;
-  disabled: boolean;
+  disabled: boolean; //no
 };
 
 export type MenuCart = {
-  menu: Omit<Menu, 'disabled'>;
+  menu: Omit<Menu, 'disabled' | 'menuType' | 'menuTypeId' | 'image'>;
   quantity: number;
   // additional: menu[];
 };
