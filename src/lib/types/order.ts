@@ -1,10 +1,12 @@
 import { MenuCart } from './menu';
 
-export type TransactionFormData = Pick<Transaction, 'menus' | 'discount' | 'tax' | 'totalPrice' | 'name' | 'note'> & {
+export type OrderFormData = Pick<Order, 'menus' | 'discount' | 'totalPrice' | 'name' | 'type'> & {
+  note?: string;
   paymentType: string; // input dari pengguna
+  paymentKind: string;
 };
 
-export type Transaction = {
+export type Order = {
   id: number; // dri BE
   cashierName: string; // dri BE
   status: string; // dri BE
@@ -13,6 +15,7 @@ export type Transaction = {
   totalPrice: number; // input dari pengguna
   name: string; // input dari pengguna
   note: string; // input dari pengguna
+  type: string; // input dari pengguna
   date: string; // dri BE
   menus: MenuCart[]; // input dari pengguna
   payments: payment[]; // dri BE
