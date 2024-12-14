@@ -1,7 +1,7 @@
 'use client';
 import MenuCard from '@/components/order-cart/menu-card';
 import MenuTypeFilter from './menu-type-filter';
-import { Menu } from '@/lib/types';
+import { Menu, MenuCart } from '@/lib/types';
 import { useSearchParams } from 'next/navigation';
 import { Dispatch, SetStateAction, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
@@ -22,7 +22,7 @@ export default function OrderMenu({ menu, setModalType, toggleModal }: Props) {
   const menuKeywordParams = searchParams.get('keyword')?.toLowerCase() || '';
 
   // Add cart to
-  const handleAddCart = (inputMenu: Omit<Menu, 'disabled'>) => {
+  const handleAddCart = (inputMenu: MenuCart['menu']) => {
     dispatch(setSelectedMenu({ menu: inputMenu, quantity: 1, menuIndex: null }));
     setModalType('add');
     toggleModal();
@@ -51,16 +51,16 @@ export default function OrderMenu({ menu, setModalType, toggleModal }: Props) {
         <h1 className="font-semibold">Daftar makanan:</h1>
         <div className="grid grid-cols-3 lg:grid-cols-5 gap-3">
           {filteredItem.map((item) => {
-            return <MenuCard onClick={handleAddCart} key={item.id} {...item} />;
+            return <MenuCard onAddCart={handleAddCart} key={item.id} {...item} />;
           })}
           {filteredItem.map((item) => {
-            return <MenuCard onClick={handleAddCart} key={item.id} {...item} />;
+            return <MenuCard onAddCart={handleAddCart} key={item.id} {...item} />;
           })}
           {filteredItem.map((item) => {
-            return <MenuCard onClick={handleAddCart} key={item.id} {...item} />;
+            return <MenuCard onAddCart={handleAddCart} key={item.id} {...item} />;
           })}
           {filteredItem.map((item) => {
-            return <MenuCard onClick={handleAddCart} key={item.id} {...item} />;
+            return <MenuCard onAddCart={handleAddCart} key={item.id} {...item} />;
           })}
         </div>
       </div>
