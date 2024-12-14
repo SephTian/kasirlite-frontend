@@ -3,11 +3,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type cartState = {
   cart: MenuCart[];
+  totalPrice: number;
   selectedMenu: (MenuCart & { menuIndex: number | null }) | null;
 };
 
 const initialState: cartState = {
   cart: [],
+  totalPrice: 0,
   selectedMenu: null,
 };
 
@@ -17,6 +19,9 @@ const cartSlice = createSlice({
   reducers: {
     setSelectedMenu: (state, action: PayloadAction<typeof state.selectedMenu>) => {
       state.selectedMenu = action.payload;
+    },
+    setTotalPrice: (state, action: PayloadAction<number>) => {
+      state.totalPrice = action.payload;
     },
     addCartItem: (state, action: PayloadAction<MenuCart>) => {
       let isInCart = false;
@@ -31,7 +36,7 @@ const cartSlice = createSlice({
 
       // If item not in cart then we add new item
       if (!isInCart) {
-        state.cart = [...state.cart, action.payload];
+        state.cart = [...state.cart, { menu: action.payload.menu, quantity: action.payload.quantity }];
         return;
       }
 
@@ -57,4 +62,4 @@ const cartSlice = createSlice({
 const cartReducer = cartSlice.reducer;
 export default cartReducer;
 
-export const { deleteCartItem, updateCartItem, addCartItem, setSelectedMenu } = cartSlice.actions;
+export const { deleteCartItem, setTotalPrice, updateCartItem, addCartItem, setSelectedMenu } = cartSlice.actions;

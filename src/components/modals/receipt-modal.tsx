@@ -1,4 +1,3 @@
-import React, { useMemo } from 'react';
 import ModalWrapper from '../custom-ui/modal-wrapper';
 import { IoCloseCircleOutline } from 'react-icons/io5';
 import ReceiptForm from '../forms/receipt-form';
@@ -11,18 +10,9 @@ type Props = {
 };
 
 export default function ReceiptModal({ isOpen, closeModal }: Props) {
-  const { cart } = useSelector((state: RootState) => state.cart);
+  const { totalPrice } = useSelector((state: RootState) => state.cart);
 
-  // Count total price from cart
-  const totalPrice: number = useMemo(
-    () =>
-      cart.reduce<number>((totalPrice, item) => {
-        return (totalPrice += (item.menu.price - item.menu.discount) * item.quantity);
-      }, 0),
-    [cart]
-  );
-
-  // TODO: Maybe later using props to acces totalPriceWithTax
+  // TODO: Maybe later using props to acces TAX
   const TAX: number = 0.12;
   const totalPriceWithTax = totalPrice + totalPrice * TAX;
 
@@ -43,7 +33,7 @@ export default function ReceiptModal({ isOpen, closeModal }: Props) {
           </div>
         </div>
         <div className="text-center text-sm font-semibold text-gray-500 my-4">Masukkan detil pembayaran</div>
-        <ReceiptForm totalPriceWithTax={totalPriceWithTax} />
+        <ReceiptForm totalPrice={totalPrice} totalPriceWithTax={totalPriceWithTax} />
       </div>
     </ModalWrapper>
   );

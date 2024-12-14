@@ -1,10 +1,10 @@
 'use client';
 
-import React, { Dispatch, SetStateAction, useMemo } from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import Button from '../custom-ui/button';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/lib/states';
-import { setSelectedMenu } from '@/lib/states/slices/cartSlice';
+import { setSelectedMenu, setTotalPrice } from '@/lib/states/slices/cartSlice';
 import ReceiptTable from './receipt-table';
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
 };
 
 export default function OrderReceipt({ setCartModalType, toggleCartModal, toggleReceiptModal }: Props) {
-  const { cart } = useSelector((state: RootState) => state.cart);
+  const { cart, totalPrice } = useSelector((state: RootState) => state.cart);
   const dispatch: AppDispatch = useDispatch();
   const TAX: number = 0.12;
 
@@ -24,14 +24,13 @@ export default function OrderReceipt({ setCartModalType, toggleCartModal, toggle
     toggleCartModal();
   };
 
-  // Count total price from cart
-  const totalPrice: number = useMemo(
-    () =>
-      cart.reduce<number>((totalPrice, item) => {
-        return (totalPrice += (item.menu.price - item.menu.discount) * item.quantity);
-      }, 0),
-    [cart]
-  );
+  // set total price inside redux
+  useEffect(() => {
+    const tp = cart.reduce<number>((totalPrice, item) => {
+      return (totalPrice += (item.menu.price - item.menu.discount) * item.quantity);
+    }, 0);
+    dispatch(setTotalPrice(tp));
+  }, [cart, dispatch]);
 
   return (
     <div className="w-full px-6 py-6 space-y-2">
