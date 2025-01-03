@@ -44,27 +44,24 @@ export default function OrderMenu({ menu, setModalType, toggleModal }: Props) {
   });
 
   return (
-    <div className="p-6 h-full flex flex-col justify-between gap-3">
-      <div className="space-y-4">
-        <MenuQueryFilter />
-        <MenuTypeFilter menuTypes={menuTypes} selectedType={menuTypeParams} />
-        <h1 className="font-semibold">Daftar makanan:</h1>
-        <div className="grid grid-cols-3 lg:grid-cols-5 gap-3">
-          {filteredItem.map((item) => {
-            return <MenuCard onAddCart={handleAddCart} key={item.id} {...item} />;
-          })}
-          {filteredItem.map((item) => {
-            return <MenuCard onAddCart={handleAddCart} key={item.id} {...item} />;
-          })}
-          {filteredItem.map((item) => {
-            return <MenuCard onAddCart={handleAddCart} key={item.id} {...item} />;
-          })}
-          {filteredItem.map((item) => {
-            return <MenuCard onAddCart={handleAddCart} key={item.id} {...item} />;
-          })}
-        </div>
+    <>
+      <MenuQueryFilter />
+      <MenuTypeFilter menuTypes={menuTypes} selectedType={menuTypeParams} />
+      <h1 className="font-semibold">Daftar makanan:</h1>
+      <div className="p-1 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 min-h-0 flex-auto overflow-y-scroll">
+        {filteredItem.map((item) => {
+          return <MenuCard onAddCart={handleAddCart} key={item.id} {...item} />;
+        })}
+        {filteredItem.map((item) => {
+          return <MenuCard onAddCart={handleAddCart} key={item.id} {...item} />;
+        })}
+        {filteredItem.map((item) => {
+          return <MenuCard onAddCart={handleAddCart} key={item.id} {...item} />;
+        })}
+        {filteredItem.map((item) => {
+          return <MenuCard onAddCart={handleAddCart} key={item.id} {...item} />;
+        })}
       </div>
-      <div className="font-lg font-bold">TODO: Pagination here later</div>
-    </div>
+    </>
   );
 }

@@ -20,7 +20,7 @@ export default function MainLayout({
         <nav className="fixed w-full flex justify-between items-center h-[50px] px-3 shadow-md border-b-2 border-customOrange bg-navbar z-10">
           <SidebarTrigger />
         </nav>
-        <div className="p-4 mt-[50px]">{children}</div>
+        <div className="p-4 mt-[50px] min-h-[calc(100vh-50px)] h-fit">{children}</div>
       </main>
     </SidebarProvider>
   );

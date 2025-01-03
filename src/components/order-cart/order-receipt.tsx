@@ -36,9 +36,9 @@ export default function OrderReceipt({ setCartModalType, toggleCartModal, toggle
   }, [cart, dispatch]);
 
   return (
-    <div className="w-full px-6 py-6 space-y-2">
+    <>
       <div className="text-center font-semibold mb-4">Transaksi</div>
-      <div className="h-[360px]">
+      <div className="min-h-[150px] flex-auto overflow-y-scroll">
         <ReceiptTable cart={cart} handleEditModal={handleEditModal} />
       </div>
       <div className="px-2 space-y-2">
@@ -66,6 +66,6 @@ export default function OrderReceipt({ setCartModalType, toggleCartModal, toggle
       >
         Konfirmasi
       </Button>
-    </div>
+    </>
   );
 }

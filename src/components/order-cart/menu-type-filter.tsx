@@ -23,7 +23,7 @@ export default function MenuTypeFilter({ menuTypes, selectedType }: Props) {
   );
 
   return (
-    <div className="flex gap-3 overflow-x-scroll">
+    <div className="flex flex-wrap gap-3">
       {/* for all type */}
       <Link href={`?${createSearchQuery('type', '')}`} replace>
         <div className={`border border-customOrange rounded-sm ${selectedType === '' ? 'bg-customOrange' : 'bg-[#fdfdfd]'} p-2 text-xs font-semibold cursor-pointer hover:bg-customOrange text-nowrap`}>
