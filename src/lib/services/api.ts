@@ -1,5 +1,5 @@
 import fetchAxios from '@/utils/axios';
-import { LoginFormData, TransactionFormData } from '../types';
+import { LoginFormData, OrderFormData } from '../types';
 
 const api = (() => {
   async function login({ email, password, ...option }: LoginFormData) {
@@ -34,35 +34,46 @@ const api = (() => {
     return menu;
   }
 
-  async function addTransaction({ menus, totalPrice, tax, discount, name, note, paymentType, ...option }: TransactionFormData) {
-    const {
-      data: { data, status, message },
-    } = await fetchAxios.post(
-      `/api/menu`,
-      {
-        menus: menus,
-        totalPrice: totalPrice,
-        tax: tax,
-        discount: discount,
-        name: name,
-        note: note,
-        paymentType: paymentType,
-      },
-      { ...option }
-    );
+  async function addOrder({ menus, totalPrice, discount, name, note, type, paymentType, paymentKind, ...option }: OrderFormData) {
+    console.log({
+      menus: menus,
+      totalPrice: totalPrice,
+      discount: discount,
+      name: name,
+      note: note ?? '',
+      type: type,
+      paymentType: paymentType,
+      paymentKind: paymentKind,
+    });
+    // const {
+    //   data: { data, status, message },
+    // } = await fetchAxios.post(
+    //   `/api/menu`,
+    //   {
+    //     menus: menus,
+    //     totalPrice: totalPrice,
+    //     tax: tax,
+    //     discount: discount,
+    //     name: name,
+    //     note: note,
+    //     type: type,
+    //     paymentType: paymentType,
+    //   },
+    //   { ...option }
+    // );
 
-    if (status !== 'ok') {
-      throw new Error(message);
-    }
+    // if (status !== 'ok') {
+    //   throw new Error(message);
+    // }
 
-    const { transaction } = data;
+    // const { Order } = data;
 
-    return transaction;
+    // return Order;
   }
   return {
     login,
     getMenu,
-    addTransaction,
+    addOrder,
   };
 })();
 
