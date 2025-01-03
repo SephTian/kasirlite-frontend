@@ -10,6 +10,7 @@ type Props = {
 function ModalWrapper({ isOpen, closeModal, children }: Props) {
   const modalRef = useRef<HTMLDivElement | null>(null);
 
+  // Make modal closed when clicked outside the modal
   useEffect(() => {
     const handleClickOutsideModal = (e: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
@@ -32,7 +33,6 @@ function ModalWrapper({ isOpen, closeModal, children }: Props) {
 
   return (
     <div className="fixed top-0 left-0 z-[1000] w-screen h-screen flex items-center justify-center overflow-y-scroll overflow-hidden bg-black/50 p-6">
-      {/* <div className="absolute -z-10 w-full h-full flex-grow bg-black opacity-40" onClick={closeModal}></div> */}
       <div ref={modalRef} className="m-auto h-fit bg-white rounded-sm p-3">
         {children}
       </div>
