@@ -15,7 +15,7 @@ export default async function OrderPage() {
   const menu = await api.getMenu({ Authorization: `Bearer ${session?.user.accessToken}` });
 
   return (
-    <div className="w-full sm:h-[calc(100vh-86px)] grid grid-cols-1 sm:grid-cols-6 gap-3">
+    <div className="w-full p-4 sm:h-[calc(100vh-86px)] grid grid-cols-1 sm:grid-cols-6 shadow-lg border rounded-lg overflow-hidden bg-[#fdfdfd] gap-3">
       <Order menu={menu} />
     </div>
   );

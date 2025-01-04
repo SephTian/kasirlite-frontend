@@ -53,15 +53,6 @@ export default function OrderMenu({ menu, setModalType, toggleModal }: Props) {
           {filteredItem.map((item) => {
             return <MenuCard onAddCart={handleAddCart} key={item.id} {...item} />;
           })}
-          {filteredItem.map((item) => {
-            return <MenuCard onAddCart={handleAddCart} key={item.id} {...item} />;
-          })}
-          {filteredItem.map((item) => {
-            return <MenuCard onAddCart={handleAddCart} key={item.id} {...item} />;
-          })}
-          {filteredItem.map((item) => {
-            return <MenuCard onAddCart={handleAddCart} key={item.id} {...item} />;
-          })}
         </div>
       </div>
     </>

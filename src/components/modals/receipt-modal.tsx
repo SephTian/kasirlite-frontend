@@ -8,14 +8,13 @@ import { formatRupiah } from '@/utils';
 type Props = {
   isOpen: boolean;
   closeModal: () => void;
+  tax: number;
 };
 
-export default function ReceiptModal({ isOpen, closeModal }: Props) {
+export default function ReceiptModal({ isOpen, closeModal, tax }: Props) {
   const { totalPrice } = useSelector((state: RootState) => state.cart);
 
-  // TODO: Maybe later using props to acces TAX
-  const TAX: number = 0.12;
-  const totalPriceWithTax = totalPrice + totalPrice * TAX;
+  const totalPriceWithTax = totalPrice + totalPrice * tax;
 
   return (
     <ModalWrapper isOpen={isOpen} closeModal={closeModal}>

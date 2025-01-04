@@ -9,8 +9,8 @@ type Props = {
 
 export default function ReceiptTable({ cart, handleEditModal }: Props) {
   return (
-    <div className="h-full overflow-y-auto border border-gray-500 rounded-sm">
-      <table className="table-auto w-full text-left ">
+    <div className="h-full overflow-y-auto border border-gray-500 rounded-sm bg-slate-50">
+      <table className="table-auto w-full text-left">
         <thead className="sticky top-0 text-xs font-medium text-gray-50 bg-gray-500">
           <tr className="w-full">
             <th className="p-2">Jumlah</th>
