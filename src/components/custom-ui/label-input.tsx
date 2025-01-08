@@ -5,13 +5,15 @@ type Props = {
   label: string;
   type: string;
   isError: boolean;
+  isImportant?: boolean;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
-const LabelInput = forwardRef<HTMLInputElement, Props>(({ label, type, name, isError, ...props }, ref) => {
+const LabelInput = forwardRef<HTMLInputElement, Props>(({ label, type, name, isError, isImportant, ...props }, ref) => {
   return (
     <div>
       <label htmlFor={name} className="block text-sm mb-1">
         {label}
+        {isImportant && <span className="text-red-600 text-xs">*</span>}
       </label>
       <Input
         ref={ref}
