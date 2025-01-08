@@ -10,7 +10,7 @@ export type Menu = {
 };
 
 export type MenuCart = {
-  menu: Omit<Menu, 'disabled' | 'menuType' | 'menuTypeId' | 'image'>;
+  menu: Omit<Menu, 'disabled' | 'menuType' | 'menuTypeId'>;
   quantity: number;
   // additional: menu[];
 };

@@ -2,7 +2,7 @@ import { MenuCart } from './menu';
 
 export type OrderFormData = Pick<Order, 'menus' | 'discount' | 'totalPrice' | 'name' | 'type'> & {
   note?: string;
-  paymentType: string; // input dari pengguna
+  paymentType?: string | null; // input dari pengguna
   paymentKind: string;
 };
 
