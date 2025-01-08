@@ -1,11 +1,13 @@
 import { AppDispatch, RootState } from '@/lib/states';
 import ModalWrapper from '../custom-ui/modal-wrapper';
+import foodItem from '@/assets/food-item.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { IoCloseCircleOutline } from 'react-icons/io5';
 import { Button } from '../ui/button';
 import { useEffect, useState } from 'react';
 import { addCartItem, deleteCartItem, updateCartItem } from '@/lib/states/slices/cartSlice';
 import { useToast } from '@/hooks/use-toast';
+import Image from 'next/image';
 
 type Props = {
   isOpen: boolean;
@@ -48,6 +50,62 @@ export default function CartDetailModal({ isOpen, closeModal, modalType }: Props
     setCurrentMenu(updatedMenu);
   };
 
+  const addButtons = (
+    <Button
+      className="w-full bg-customOrange text-white hover:bg-customDarkOrange text-secondary"
+      onClick={() => {
+        if (currentMenu) {
+          dispatch(addCartItem(currentMenu));
+          toast({
+            variant: 'informative',
+            title: 'Keranjang Berubah',
+            description: 'Menu berhasil ditambahkan',
+          });
+        }
+        closeModal();
+      }}
+    >
+      Tambah
+    </Button>
+  );
+
+  const editButtons = (
+    <>
+      <Button
+        className="w-full bg-red-500 text-white hover:bg-red-800"
+        onClick={() => {
+          if (currentMenu && currentMenu.menuIndex !== null) {
+            dispatch(deleteCartItem({ index: currentMenu.menuIndex }));
+            toast({
+              variant: 'informative',
+              title: 'Keranjang Berubah',
+              description: 'Menu berhasil dihapus',
+            });
+            closeModal();
+          }
+        }}
+      >
+        Hapus
+      </Button>
+      <Button
+        className="w-full bg-customOrange text-white hover:bg-customDarkOrange"
+        onClick={() => {
+          if (currentMenu && currentMenu.menuIndex !== null) {
+            dispatch(updateCartItem({ index: currentMenu.menuIndex, quantity: currentMenu.quantity }));
+            toast({
+              variant: 'informative',
+              title: 'Keranjang Berubah',
+              description: 'Menu berhasil diubah',
+            });
+            closeModal();
+          }
+        }}
+      >
+        Simpan
+      </Button>
+    </>
+  );
+
   return (
     <ModalWrapper isOpen={isOpen} closeModal={closeModal}>
       <div className="flex w-full items-center justify-between mb-3">
@@ -55,7 +113,9 @@ export default function CartDetailModal({ isOpen, closeModal, modalType }: Props
         <IoCloseCircleOutline className="w-6 h-6 cursor-pointer" onClick={closeModal} />
       </div>
       <div className="flex flex-col gap-1 items-center">
-        <div className="w-[200px] aspect-square bg-gray-500 rounded-sm overflow-hidden"></div>
+        <div className="w-[200px] aspect-square bg-gray-200 rounded-sm overflow-hidden">
+          <Image className="w-full h-full object-contain" src={selectedMenu?.menu.image ?? foodItem} alt="error" />
+        </div>
         <p className="text-md font-semibold">{selectedMenu?.menu.name}</p>
         <p className="text-sm font-medium text-gray-600">Rp {(selectedMenu?.menu.price || 0) - (selectedMenu?.menu.discount || 0)}</p>
         <div>
@@ -80,60 +140,8 @@ export default function CartDetailModal({ isOpen, closeModal, modalType }: Props
           </div>
         </div>
         <div className="flex gap-2 mt-6 w-full">
-          {modalType === 'add' && (
-            <Button
-              className="w-full bg-customOrange text-white hover:bg-customDarkOrange text-secondary"
-              onClick={() => {
-                if (currentMenu) {
-                  dispatch(addCartItem(currentMenu));
-                  toast({
-                    variant: 'informative',
-                    title: 'Keranjang Berubah',
-                    description: 'Menu berhasil ditambahkan',
-                  });
-                }
-                closeModal();
-              }}
-            >
-              Tambah
-            </Button>
-          )}
-          {modalType === 'edit' && (
-            <>
-              <Button
-                className="w-full bg-red-500 text-white hover:bg-red-800"
-                onClick={() => {
-                  if (currentMenu && currentMenu.menuIndex !== null) {
-                    dispatch(deleteCartItem({ index: currentMenu.menuIndex }));
-                    toast({
-                      variant: 'informative',
-                      title: 'Keranjang Berubah',
-                      description: 'Menu berhasil dihapus',
-                    });
-                    closeModal();
-                  }
-                }}
-              >
-                Hapus
-              </Button>
-              <Button
-                className="w-full bg-customOrange text-white hover:bg-customDarkOrange"
-                onClick={() => {
-                  if (currentMenu && currentMenu.menuIndex !== null) {
-                    dispatch(updateCartItem({ index: currentMenu.menuIndex, quantity: currentMenu.quantity }));
-                    toast({
-                      variant: 'informative',
-                      title: 'Keranjang Berubah',
-                      description: 'Menu berhasil diubah',
-                    });
-                    closeModal();
-                  }
-                }}
-              >
-                Simpan
-              </Button>
-            </>
-          )}
+          {modalType === 'add' && addButtons}
+          {modalType === 'edit' && editButtons}
         </div>
       </div>
     </ModalWrapper>

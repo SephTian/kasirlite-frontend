@@ -1,5 +1,7 @@
 import { Menu, MenuCart } from '@/lib/types';
 import { formatRupiah } from '@/utils';
+import foodItem from '@/assets/food-item.png';
+import Image from 'next/image';
 import React from 'react';
 type Props = Omit<Menu, 'menuType' | 'menuTypeId'> & {
   onAddCart?: (param: MenuCart['menu']) => void;
@@ -8,7 +10,7 @@ type Props = Omit<Menu, 'menuType' | 'menuTypeId'> & {
 export default function MenuCard({ id, image, name, price, discount, disabled, onAddCart }: Props) {
   const handleClick = () => {
     if (!disabled) {
-      onAddCart?.({ id, name, price, discount });
+      onAddCart?.({ id, name, price, discount, image });
     }
   };
 
@@ -18,7 +20,7 @@ export default function MenuCard({ id, image, name, price, discount, disabled, o
       onClick={handleClick}
     >
       <div className="w-full rounded-sm aspect-video bg-gray-300">
-        {/* TODO: PASANG IMAGE */} {image}
+        <Image className="w-full h-full object-contain" src={image ?? foodItem} alt="error" />
       </div>
       <div className="">
         <p className="font-bold truncate text-xs my-2">{name}</p>
