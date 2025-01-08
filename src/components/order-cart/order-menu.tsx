@@ -31,8 +31,8 @@ export default function OrderMenu({ menu, setModalType, toggleModal }: Props) {
   // Getting type from item data
   const menuTypes: string[] = useMemo(() => {
     return menu?.reduce<string[]>((types, item) => {
-      if (!types.includes(item.menuType)) {
-        types.push(item.menuType);
+      if (!types.includes(item.menuType.name)) {
+        types.push(item.menuType.name);
       }
       return types;
     }, []);
@@ -40,7 +40,7 @@ export default function OrderMenu({ menu, setModalType, toggleModal }: Props) {
 
   // Filtering item with type and keyword
   const filteredItem = menu.filter((item) => {
-    return item.menuType.toLowerCase().includes(menuTypeParams) && item.name.toLowerCase().includes(menuKeywordParams);
+    return item.menuType.name.toLowerCase().includes(menuTypeParams) && item.name.toLowerCase().includes(menuKeywordParams);
   });
 
   return (
