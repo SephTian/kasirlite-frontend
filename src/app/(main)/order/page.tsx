@@ -4,6 +4,8 @@ import api from '@/lib/services/api';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
+export const revalidate = 0; // No caching at all
+
 export default async function OrderPage() {
   // ini akan te refresh jika param berubah pada link
   // PADA SERVER COMPONENT AKAN TERUS BERUBAH JIKA ADA DEPENDENCY DI LINK
@@ -15,7 +17,7 @@ export default async function OrderPage() {
   const menu = await api.getMenu({ Authorization: `Bearer ${session?.user.accessToken}` });
 
   return (
-    <div className="w-full p-4 sm:h-[calc(100vh-86px)] grid grid-cols-1 sm:grid-cols-6 shadow-lg border rounded-lg overflow-hidden bg-[#fdfdfd] gap-3">
+    <div className="w-full p-4 sm:h-[calc(100vh-86px)] grid grid-cols-1 sm:grid-cols-6 border rounded-lg bg-[#fdfdfd] gap-3">
       <Order menu={menu} />
     </div>
   );

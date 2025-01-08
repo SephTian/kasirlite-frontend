@@ -20,12 +20,12 @@ export default function Order({ menu }: Props) {
   return (
     <>
       {/* mobile max height work because the item list height can overflow */}
-      <div className="flex flex-col gap-4 h-full max-h-[650px] sm:max-h-[calc(100vh-86px)] sm:col-span-3 lg:col-span-4">
+      <div className="flex flex-col gap-4 h-full max-h-[650px] sm:max-h-[calc(100vh-118px)] sm:col-span-3 lg:col-span-4">
         <OrderMenu setModalType={setCartModalType} toggleModal={toggleCartModal} menu={menu} />
       </div>
 
       {/* mobile max height NOT work because order receipt not overflowing. Can be overflowing, but when too much order in cart */}
-      <div className="w-full min-w-[100px] h-full max-h-[650px] sm:max-h-[calc(100vh-86px)] flex flex-col gap-2 sm:col-span-3 lg:col-span-2">
+      <div className="flex flex-col gap-2 w-full min-w-[100px] h-full max-h-[650px] sm:max-h-[calc(100vh-118px)] sm:col-span-3 lg:col-span-2">
         <OrderReceipt tax={TAX} setCartModalType={setCartModalType} toggleCartModal={toggleCartModal} toggleReceiptModal={toggleReceiptModal} />
       </div>
       <CartDetailModal isOpen={isOpenCartModal} closeModal={toggleCartModal} modalType={cartModalType} />

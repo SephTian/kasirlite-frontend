@@ -48,8 +48,17 @@ export default function OrderMenu({ menu, setModalType, toggleModal }: Props) {
       <MenuQueryFilter />
       <MenuTypeFilter menuTypes={menuTypes} selectedType={menuTypeParams} />
       <h1 className="font-semibold">Daftar makanan:</h1>
-      <div className="w-full p-1 min-h-0 flex-auto overflow-y-scroll">
+      <div className="w-full p-2 min-h-0 flex-auto overflow-y-scroll rounded-lg bg-slate-100 shadow-inner">
         <div className="h-fit w-full grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+          {filteredItem.map((item) => {
+            return <MenuCard onAddCart={handleAddCart} key={item.id} {...item} />;
+          })}
+          {filteredItem.map((item) => {
+            return <MenuCard onAddCart={handleAddCart} key={item.id} {...item} />;
+          })}
+          {filteredItem.map((item) => {
+            return <MenuCard onAddCart={handleAddCart} key={item.id} {...item} />;
+          })}
           {filteredItem.map((item) => {
             return <MenuCard onAddCart={handleAddCart} key={item.id} {...item} />;
           })}

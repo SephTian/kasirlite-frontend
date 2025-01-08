@@ -27,12 +27,8 @@ function ModalWrapper({ isOpen, closeModal, children }: Props) {
     };
   }, [isOpen, closeModal]);
 
-  if (!isOpen) {
-    return null;
-  }
-
   return (
-    <div className="fixed top-0 left-0 z-[1000] w-screen h-screen flex items-center justify-center overflow-y-scroll overflow-hidden bg-black/50 p-6">
+    <div className={isOpen ? `fixed top-0 left-0 z-[1000] w-screen h-screen flex items-center justify-center overflow-y-scroll overflow-hidden bg-black/50 p-6` : `hidden`}>
       <div ref={modalRef} className="m-auto h-fit bg-white rounded-sm p-3">
         {children}
       </div>
