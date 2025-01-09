@@ -1,4 +1,4 @@
-import { unformatPrice } from '@/utils';
+import { formatPriceToNumber } from '@/utils';
 import { z } from 'zod';
 
 export const receiptFormSchema = z
@@ -6,7 +6,7 @@ export const receiptFormSchema = z
     discount: z
       .string()
       .min(1, 'Diskon harus diisi')
-      .refine((val) => unformatPrice(val) < 0, { message: 'Angka diskon tidak boleh dibawah 0' }),
+      .refine((val) => formatPriceToNumber(val) >= 0, { message: 'Angka diskon tidak boleh dibawah 0' }),
     type: z.string({ required_error: 'Tipe Order harus dipilih', invalid_type_error: 'Tipe Order harus dipilih' }),
     paymentKind: z.string({ required_error: 'Jenis Pembayaran harus dipilih', invalid_type_error: 'Jenis Pembayaran harus dipilih' }),
     paymentType: z.string().nullable().optional(),
