@@ -17,7 +17,7 @@ export default function ReceiptModal({ isOpen, closeModal, tax }: Props) {
   const totalPriceWithTax = totalPrice + totalPrice * tax;
 
   return (
-    <ModalWrapper isOpen={isOpen} closeModal={closeModal}>
+    <ModalWrapper isOpen={isOpen} closeModal={closeModal} classname="w-full min-w-[300px] max-w-[800px]">
       {/* Card Title */}
       <div className="flex w-full items-center justify-between mb-3">
         <p className="text-md font-bold">Detil Transaksi</p>
@@ -25,7 +25,7 @@ export default function ReceiptModal({ isOpen, closeModal, tax }: Props) {
       </div>
 
       {/* Card Body */}
-      <div className="h-full">
+      <div className="h-full w-full">
         <div className="bg-customOrange rounded-md py-2 px-4 text-white shadow-lg">
           <div className="text-lg flex justify-between items-center">
             <p className="text-sm">Total Harga + Pajak:</p>
