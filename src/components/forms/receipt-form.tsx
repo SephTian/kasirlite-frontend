@@ -12,7 +12,7 @@ import LabelSelect from '../custom-ui/label-select';
 import { MdPayments } from 'react-icons/md';
 import LabelTextarea from '../custom-ui/label-textarea';
 import LabelRupiahInput from '../custom-ui/label-rupiah-input';
-import { formatPrice, unformatPrice } from '@/utils';
+import { formatPrice, formatPriceToNumber, formatNumberToPrice } from '@/utils';
 
 type Props = { totalPriceWithTax: number; totalPrice: number };
 
@@ -39,7 +39,7 @@ export default function ReceiptForm({ totalPrice, totalPriceWithTax }: Props) {
   // Calculating after discount price
   const discountFormValue = watch('discount');
   useEffect(() => {
-    const unformated = unformatPrice(discountFormValue === '' ? '0' : discountFormValue); // formatting dicount from 11.500 to 11500
+    const unformated = formatPriceToNumber(discountFormValue === '' ? '0' : discountFormValue); // formatting dicount from 11.500 to 11500
     setAfterDiscountPrice(totalPriceWithTax - unformated);
     if (totalPriceWithTax - unformated < 0) {
       setAfterDiscountError('Harga setelah diskon tidak boleh dibawah 0'); // make error if the price after discount below 0
@@ -53,7 +53,7 @@ export default function ReceiptForm({ totalPrice, totalPriceWithTax }: Props) {
     if (!afterDiscountError) {
       await api.addOrder({
         menus: cart,
-        discount: unformatPrice(data.discount),
+        discount: formatPriceToNumber(data.discount),
         customerName: data.customerName,
         note: data.note,
         totalPrice: totalPrice,
@@ -64,12 +64,11 @@ export default function ReceiptForm({ totalPrice, totalPriceWithTax }: Props) {
     }
   }
 
+  //Make discount value always on preferable price format
   const handleDiscountChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    let input = e.target.value;
-    input = input.replace(/\D/g, ''); // Delete all char not number
-    input = input.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); // Make number to be currency
-    setValue('discount', input);
-    await trigger('discount');
+    const input = e.target.value;
+    setValue('discount', formatPrice(input));
+    trigger('discount');
   };
 
   return (
@@ -87,7 +86,7 @@ export default function ReceiptForm({ totalPrice, totalPriceWithTax }: Props) {
           {errors.discount && <ErrorInputMessage>{errors.discount.message}</ErrorInputMessage>}
         </div>
         <div>
-          <LabelRupiahInput readOnly label="Harga setelah diskon" placeholder="" value={formatPrice(afterDiscountPrice)} isError={afterDiscountError ? true : false} />
+          <LabelRupiahInput readOnly label="Harga setelah diskon" placeholder="" value={formatNumberToPrice(afterDiscountPrice)} isError={afterDiscountError ? true : false} />
           {afterDiscountError && <ErrorInputMessage>{afterDiscountError}</ErrorInputMessage>}
         </div>
       </div>
