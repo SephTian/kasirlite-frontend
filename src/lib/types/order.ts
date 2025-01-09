@@ -1,3 +1,4 @@
+import { MenuCart } from './menu';
 import { OrderDetail } from './orderDetail';
 import { Payment } from './payment';
 import { User } from './user';
@@ -17,7 +18,8 @@ export type Order = {
   payments: Payment[]; // dri BE
 };
 
-export type OrderFormData = Pick<Order, 'menus' | 'discount' | 'totalPrice' | 'customerName' | 'type'> & {
+export type OrderFormData = Pick<Order, 'discount' | 'totalPrice' | 'customerName' | 'type'> & {
+  menus: MenuCart[];
   note?: string | null;
   paymentType?: string | null; // input dari pengguna
   paymentKind: string;

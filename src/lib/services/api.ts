@@ -34,12 +34,12 @@ const api = (() => {
     return menu;
   }
 
-  async function addOrder({ menus, totalPrice, discount, name, note, type, paymentType, paymentKind, ...option }: OrderFormData) {
+  async function addOrder({ menus, totalPrice, discount, customerName, note, type, paymentType, paymentKind, ...option }: OrderFormData) {
     console.log({
       menus: menus,
       totalPrice: totalPrice,
       discount: discount,
-      name: name,
+      customerName: customerName,
       note: note ?? '',
       type: type,
       paymentType: paymentType,
