@@ -53,7 +53,7 @@ export default function ReceiptForm({ totalPrice, totalPriceWithTax }: Props) {
     if (!afterDiscountError) {
       await api.addOrder({
         menus: cart,
-        discount: parseInt(data.discount),
+        discount: unformatPrice(data.discount),
         customerName: data.customerName,
         note: data.note,
         totalPrice: totalPrice,

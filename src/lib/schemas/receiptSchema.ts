@@ -1,12 +1,16 @@
+import { unformatPrice } from '@/utils';
 import { z } from 'zod';
 
 export const receiptFormSchema = z
   .object({
-    discount: z.coerce.number().min(0, 'Minimal 0 rupiah'),
+    discount: z
+      .string()
+      .min(1, 'Diskon harus diisi')
+      .refine((val) => unformatPrice(val) < 0, { message: 'Angka diskon tidak boleh dibawah 0' }),
     type: z.string({ required_error: 'Tipe Order harus dipilih', invalid_type_error: 'Tipe Order harus dipilih' }),
     paymentKind: z.string({ required_error: 'Jenis Pembayaran harus dipilih', invalid_type_error: 'Jenis Pembayaran harus dipilih' }),
     paymentType: z.string().nullable().optional(),
-    name: z.string({ required_error: 'Nama harus diisi', invalid_type_error: 'Nama harus diisi' }).min(3, 'Nama minimal harus 3 digit'),
+    customerName: z.string({ required_error: 'Nama harus diisi', invalid_type_error: 'Nama harus diisi' }).min(3, 'Nama minimal harus 3 digit'),
     note: z.string().optional(),
   })
   .superRefine((data, ctx) => {
