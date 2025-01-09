@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import LabelInput from '../custom-ui/label-input';
 import Button from '../custom-ui/button';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { receiptFormSchema, ReceiptFormType } from '@/lib/schemas/receiptSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import ErrorInputMessage from '../custom-ui/error-input-message';
@@ -11,46 +11,50 @@ import { useSelector } from 'react-redux';
 import LabelSelect from '../custom-ui/label-select';
 import { MdPayments } from 'react-icons/md';
 import LabelTextarea from '../custom-ui/label-textarea';
+import LabelRupiahInput from '../custom-ui/label-rupiah-input';
+import { formatPrice, unformatPrice } from '@/utils';
 
 type Props = { totalPriceWithTax: number; totalPrice: number };
 
 export default function ReceiptForm({ totalPrice, totalPriceWithTax }: Props) {
-  const [afterDisountPrice, setAfterDisountPrice] = useState(0);
+  const [afterDiscountPrice, setAfterDiscountPrice] = useState(0);
   const [afterDiscountError, setAfterDiscountError] = useState<string | null>(null);
   const { cart } = useSelector((state: RootState) => state.cart);
 
   const {
+    control,
+    trigger,
+    setValue,
     register,
     handleSubmit,
     watch,
     formState: { errors, isSubmitting },
   } = useForm<ReceiptFormType>({
     defaultValues: {
-      discount: 0,
+      discount: '0',
     },
     resolver: zodResolver(receiptFormSchema),
   });
 
   // Calculating after discount price
-  const discountValue = watch('discount');
+  const discountFormValue = watch('discount');
   useEffect(() => {
-    setAfterDisountPrice(totalPriceWithTax - discountValue);
-
-    // make error if the price after discount below 0
-    if (totalPriceWithTax - discountValue < 0) {
-      setAfterDiscountError('Harga setelah diskon tidak boleh 0');
+    const unformated = unformatPrice(discountFormValue === '' ? '0' : discountFormValue); // formatting dicount from 11.500 to 11500
+    setAfterDiscountPrice(totalPriceWithTax - unformated);
+    if (totalPriceWithTax - unformated < 0) {
+      setAfterDiscountError('Harga setelah diskon tidak boleh dibawah 0'); // make error if the price after discount below 0
       return;
     }
     setAfterDiscountError(null);
-  }, [totalPriceWithTax, discountValue]);
+  }, [totalPriceWithTax, discountFormValue]);
 
   // Handling adding transaction
   async function handleAddTransaction(data: ReceiptFormType) {
-    if (afterDisountPrice > 0) {
+    if (!afterDiscountError) {
       await api.addOrder({
         menus: cart,
-        discount: data.discount,
-        name: data.name,
+        discount: parseInt(data.discount),
+        customerName: data.customerName,
         note: data.note,
         totalPrice: totalPrice,
         type: data.type,
@@ -60,22 +64,36 @@ export default function ReceiptForm({ totalPrice, totalPriceWithTax }: Props) {
     }
   }
 
+  const handleDiscountChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    let input = e.target.value;
+    input = input.replace(/\D/g, ''); // Delete all char not number
+    input = input.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); // Make number to be currency
+    setValue('discount', input);
+    await trigger('discount');
+  };
+
   return (
     <form className="space-y-4" onSubmit={handleSubmit(handleAddTransaction)}>
       {/* Discount section */}
-      <div className="grid lg:grid-cols-2 gap-4">
+      <div className="grid md:grid-cols-2 gap-4">
         <div>
-          <LabelInput {...register('discount')} label="Diskon" type="number" placeholder="Diskon.." isError={errors.discount ? true : false} />
+          <Controller
+            control={control}
+            name="discount"
+            render={({ field }) => (
+              <LabelRupiahInput label="Diskon" placeholder="Diskon.." {...field} onChange={handleDiscountChange} value={field.value || ''} isError={errors.discount ? true : false} />
+            )}
+          />
           {errors.discount && <ErrorInputMessage>{errors.discount.message}</ErrorInputMessage>}
         </div>
         <div>
-          <LabelInput readOnly label="Harga setelah diskon" placeholder="" type="number" value={afterDisountPrice} isError={afterDiscountError ? true : false} />
+          <LabelRupiahInput readOnly label="Harga setelah diskon" placeholder="" value={formatPrice(afterDiscountPrice)} isError={afterDiscountError ? true : false} />
           {afterDiscountError && <ErrorInputMessage>{afterDiscountError}</ErrorInputMessage>}
         </div>
       </div>
 
       {/* Payment kind & Order type section */}
-      <div className="grid lg:grid-cols-2 gap-4">
+      <div className="grid md:grid-cols-2 gap-4">
         <div>
           <LabelSelect {...register('paymentKind')} label="Tipe Pembayaran" isError={errors.type ? true : false} isImportant>
             <option value="N">Bayar Nanti</option>
@@ -117,8 +135,8 @@ export default function ReceiptForm({ totalPrice, totalPriceWithTax }: Props) {
 
       {/* name section */}
       <div>
-        <LabelInput {...register('name')} label="Nama Pelanggan" type="text" placeholder="Nama Pelanggan..." isError={errors.name ? true : false} isImportant />
-        {errors.name && <ErrorInputMessage>{errors.name.message}</ErrorInputMessage>}
+        <LabelInput {...register('customerName')} label="Nama Pelanggan" type="text" placeholder="Nama Pelanggan..." isError={errors.customerName ? true : false} isImportant />
+        {errors.customerName && <ErrorInputMessage>{errors.customerName.message}</ErrorInputMessage>}
       </div>
 
       {/* note section */}
