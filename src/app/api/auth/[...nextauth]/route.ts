@@ -14,8 +14,9 @@ declare module 'next-auth' {
     role: string;
   }
 
-  interface Session {
-    user: UserSession & DefaultSession['user'];
+  interface Session extends DefaultSession {
+    user: UserSession;
+    accessToken: string;
   }
 }
 
@@ -66,8 +67,7 @@ export const authOptions: NextAuthOptions = {
     /**
      * Fungsi ini akan terpanggil saat
      * 1. saat login berhasil
-     * 2. setiap request API (useSession atau getSession)
-     * 3. Saat Token Dibutuhkan untuk Session
+     * 2. Saat Token / Session Dibutuhkan (getToken, getSession, getServerSession, useSession)
      * 4. Ketika Token Kadaluarsa atau Perlu Refresh
      */
     async jwt({ token, user, account }) {
@@ -80,10 +80,12 @@ export const authOptions: NextAuthOptions = {
         console.log('hi ini aku saat setelah login');
         return {
           ...token,
+          user: {
+            name: user.name,
+            email: user.email,
+            role: user.role,
+          },
           accessToken: user.accessToken,
-          name: user.name,
-          email: user.email,
-          role: user.role,
         };
       }
 
@@ -95,11 +97,9 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       if (token) {
-        session.user = {
-          accessToken: token.accessToken as string,
-          email: token.email as string,
-          name: token.name as string,
-          role: token.role as string,
+        session = {
+          ...session,
+          ...token,
         };
       }
       return session;
