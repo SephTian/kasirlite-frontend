@@ -4,6 +4,7 @@ export type LoginFormData = {
 };
 
 export type UserSession = {
+  id: number;
   name: string;
   email: string;
   role: string;

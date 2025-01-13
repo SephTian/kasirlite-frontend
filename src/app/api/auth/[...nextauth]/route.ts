@@ -9,6 +9,7 @@ declare module 'next-auth' {
   interface User {
     accessToken: string;
     accessTokenExpires: number;
+    id: number;
     name: string;
     email: string;
     role: string;
@@ -81,6 +82,7 @@ export const authOptions: NextAuthOptions = {
         return {
           ...token,
           user: {
+            id: user.id,
             name: user.name,
             email: user.email,
             role: user.role,

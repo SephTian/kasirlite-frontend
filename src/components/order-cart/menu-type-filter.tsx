@@ -3,9 +3,10 @@
 import React, { useCallback } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { MenuType } from '@/lib/types';
 
 type Props = {
-  menuTypes: string[];
+  menuTypes: MenuType[];
   selectedType: string;
 };
 
@@ -32,11 +33,11 @@ export default function MenuTypeFilter({ menuTypes, selectedType }: Props) {
       </Link>
       {/* for custom type */}
       {menuTypes.map((item, key) => {
-        const isSelected = item.toLocaleLowerCase() === selectedType;
+        const isSelected = item.name.toLocaleLowerCase() === selectedType;
         return (
-          <Link key={key} href={`?${createSearchQuery('type', selectedType === item ? '' : item)}`} replace>
+          <Link key={key} href={`?${createSearchQuery('type', selectedType === item.name ? '' : item.name)}`} replace>
             <div className={`border border-customOrange rounded-sm ${isSelected ? 'bg-customOrange' : 'bg-[#fdfdfd]'} p-2 text-xs font-semibold cursor-pointer hover:bg-customOrange text-nowrap`}>
-              {item}
+              {item.name}
             </div>
           </Link>
         );

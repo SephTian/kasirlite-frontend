@@ -5,10 +5,13 @@ import { useCallback } from 'react';
 import { Input } from '../ui/input';
 import { useDebouncedCallback } from 'use-debounce';
 
-export default function MenuQueryFilter() {
+type Props = {
+  selectedKeyword: string;
+};
+
+export default function MenuQueryFilter({ selectedKeyword }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const menuKeywordParams = searchParams.get('keyword')?.toString() || '';
 
   // create search params
   const createSearchQuery = useCallback(
@@ -31,7 +34,7 @@ export default function MenuQueryFilter() {
         onChange={(e) => {
           handleKeyword(e.target.value);
         }}
-        defaultValue={menuKeywordParams}
+        defaultValue={selectedKeyword}
         className="w-full border-2 border-customOrange bg-white focus-visible:ring-0 focus-visible:outline-none"
         type="text"
         placeholder="Cari menu..."

@@ -20,18 +20,32 @@ const api = (() => {
     return user;
   }
 
-  async function getMenu({ ...option }) {
+  async function getMenus({ ...option }) {
     const {
       data: { data, status, message },
-    } = await fetchAxios.get(`/api/menu`, { ...option });
+    } = await fetchAxios.get(`/api/menus`, { ...option });
 
     if (status !== 'ok') {
       throw new Error(message);
     }
 
-    const { menu } = data;
+    const { menus } = data;
 
-    return menu;
+    return menus;
+  }
+
+  async function getMenuTypes({ ...option }) {
+    const {
+      data: { data, status, message },
+    } = await fetchAxios.get(`/api/menutypes`, { ...option });
+
+    if (status !== 'ok') {
+      throw new Error(message);
+    }
+
+    const { menuTypes } = data;
+
+    return menuTypes;
   }
 
   async function addOrder({ menus, totalPrice, discount, customerName, note, type, paymentType, paymentKind, ...option }: OrderFormData) {
@@ -72,7 +86,8 @@ const api = (() => {
   }
   return {
     login,
-    getMenu,
+    getMenus,
+    getMenuTypes,
     addOrder,
   };
 })();

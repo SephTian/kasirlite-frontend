@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation';
 
 export const revalidate = 0; // No caching at all
 
-export default async function OrderPage() {
+export default async function OrderPage({ searchParams }: { searchParams?: { [key: string]: string | string[] | undefined } }) {
   // ini akan te refresh jika param berubah pada link
   // PADA SERVER COMPONENT AKAN TERUS BERUBAH JIKA ADA DEPENDENCY DI LINK
   const session = await getServerSession(authOptions);
@@ -14,11 +14,26 @@ export default async function OrderPage() {
     redirect('/login');
   }
 
-  const menu = await api.getMenu({ Authorization: `Bearer ${session?.user.accessToken}` });
+  const [menus, menuTypes] = await Promise.all([
+    api.getMenus({
+      params: {
+        keyword: searchParams?.keyword || '',
+        type: searchParams?.type || '',
+      },
+      headers: {
+        Authorization: 'Bearer your_token_here', // Token untuk otentikasi
+      },
+    }),
+    api.getMenuTypes({
+      headers: {
+        Authorization: 'Bearer your_token_here', // Token untuk otentikasi
+      },
+    }),
+  ]);
 
   return (
     <div className="w-full p-4 sm:h-[calc(100vh-86px)] grid grid-cols-1 sm:grid-cols-6 border rounded-lg bg-[#fdfdfd] gap-3">
-      <Order menu={menu} />
+      <Order menuTypes={menuTypes} menus={menus} />
     </div>
   );
 }
