@@ -10,7 +10,7 @@ import { setSelectedMenu } from '@/lib/states/slices/cartSlice';
 import MenuQueryFilter from './menu-query-filter';
 
 type Props = {
-  menus: Menu[];
+  menus: Omit<Menu, 'menuCategoryId'>[];
   menuCategories: MenuCategory[];
   setModalType: Dispatch<SetStateAction<'add' | 'edit'>>;
   toggleModal: () => void;

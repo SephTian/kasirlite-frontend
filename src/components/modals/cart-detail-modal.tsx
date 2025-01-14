@@ -4,8 +4,7 @@ import foodItem from '@/assets/food-item.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { IoCloseCircleOutline } from 'react-icons/io5';
 import { Button } from '../ui/button';
-import { useEffect, useState } from 'react';
-import { addCartItem, deleteCartItem, updateCartItem } from '@/lib/states/slices/cartSlice';
+import { addCartItem, deleteCartItem, setSelectedMenu, updateCartItem } from '@/lib/states/slices/cartSlice';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 
@@ -19,43 +18,37 @@ export default function CartDetailModal({ isOpen, closeModal, modalType }: Props
   const dispatch: AppDispatch = useDispatch();
   const { toast } = useToast();
   const { selectedMenu } = useSelector((state: RootState) => state.cart);
-  const [currentMenu, setCurrentMenu] = useState<typeof selectedMenu | undefined>();
-
-  // Ini proses memasukkan selected menu kedalam current menu
-  useEffect(() => {
-    setCurrentMenu(selectedMenu);
-  }, [selectedMenu]);
 
   // Ini akan decrement item dari current item
   const handleDecrementItem = () => {
-    if (!currentMenu) return;
+    if (!selectedMenu) return;
 
-    if (currentMenu.quantity > 1) {
+    if (selectedMenu.quantity > 1) {
       const updatedMenu = {
-        ...currentMenu,
-        quantity: currentMenu.quantity - 1,
+        ...selectedMenu,
+        quantity: selectedMenu.quantity - 1,
       };
-      setCurrentMenu(updatedMenu);
+      dispatch(setSelectedMenu(updatedMenu));
     }
   };
 
   // Ini akan increment item dari current item
   const handleIncrementItem = () => {
-    if (!currentMenu) return;
+    if (!selectedMenu) return;
 
     const updatedMenu = {
-      ...currentMenu,
-      quantity: currentMenu.quantity + 1,
+      ...selectedMenu,
+      quantity: selectedMenu.quantity + 1,
     };
-    setCurrentMenu(updatedMenu);
+    dispatch(setSelectedMenu(updatedMenu));
   };
 
   const addButtons = (
     <Button
       className="w-full bg-customOrange text-white hover:bg-customDarkOrange text-secondary"
       onClick={() => {
-        if (currentMenu) {
-          dispatch(addCartItem(currentMenu));
+        if (selectedMenu) {
+          dispatch(addCartItem(selectedMenu));
           toast({
             variant: 'informative',
             title: 'Keranjang Berubah',
@@ -74,8 +67,8 @@ export default function CartDetailModal({ isOpen, closeModal, modalType }: Props
       <Button
         className="w-full bg-red-500 text-white hover:bg-red-800"
         onClick={() => {
-          if (currentMenu && currentMenu.menuIndex !== null) {
-            dispatch(deleteCartItem({ index: currentMenu.menuIndex }));
+          if (selectedMenu && selectedMenu.menuIndex !== null) {
+            dispatch(deleteCartItem({ index: selectedMenu.menuIndex }));
             toast({
               variant: 'informative',
               title: 'Keranjang Berubah',
@@ -90,8 +83,8 @@ export default function CartDetailModal({ isOpen, closeModal, modalType }: Props
       <Button
         className="w-full bg-customOrange text-white hover:bg-customDarkOrange"
         onClick={() => {
-          if (currentMenu && currentMenu.menuIndex !== null) {
-            dispatch(updateCartItem({ index: currentMenu.menuIndex, quantity: currentMenu.quantity }));
+          if (selectedMenu && selectedMenu.menuIndex !== null) {
+            dispatch(updateCartItem({ index: selectedMenu.menuIndex, quantity: selectedMenu.quantity }));
             toast({
               variant: 'informative',
               title: 'Keranjang Berubah',
@@ -128,7 +121,7 @@ export default function CartDetailModal({ isOpen, closeModal, modalType }: Props
             >
               -
             </Button>
-            <div className="w-14 text-center">{currentMenu?.quantity}</div>
+            <div className="w-14 text-center">{selectedMenu?.quantity}</div>
             <Button
               onClick={() => {
                 handleIncrementItem();

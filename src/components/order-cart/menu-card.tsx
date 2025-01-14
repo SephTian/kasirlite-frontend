@@ -3,7 +3,7 @@ import { formatRupiah } from '@/utils';
 import foodItem from '@/assets/food-item.png';
 import Image from 'next/image';
 import React from 'react';
-type Props = Omit<Menu, 'menuCategory'> & {
+type Props = Omit<Menu, 'menuCategoryId' | 'menuCategory'> & {
   onAddCart?: (param: MenuCart['menu']) => void;
 };
 

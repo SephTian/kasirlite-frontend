@@ -4,7 +4,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 type cartState = {
   cart: MenuCart[];
   totalPrice: number;
-  selectedMenu: (MenuCart & { menuIndex: number | null }) | null;
+  selectedMenu: (Omit<MenuCart, 'subPrice'> & { menuIndex: number | null }) | null;
 };
 
 const initialState: cartState = {
@@ -23,7 +23,7 @@ const cartSlice = createSlice({
     setTotalPrice: (state, action: PayloadAction<number>) => {
       state.totalPrice = action.payload;
     },
-    addCartItem: (state, action: PayloadAction<MenuCart>) => {
+    addCartItem: (state, action: PayloadAction<Omit<MenuCart, 'subPrice'>>) => {
       let isInCart = false;
 
       const currentCart = state.cart.map((item) => {
