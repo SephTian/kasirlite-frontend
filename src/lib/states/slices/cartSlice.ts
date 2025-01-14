@@ -25,18 +25,44 @@ const cartSlice = createSlice({
     },
     addCartItem: (state, action: PayloadAction<MenuCart>) => {
       let isInCart = false;
+
       const currentCart = state.cart.map((item) => {
         // Checking if item in cart, so the quantity will be incremented
-        if (item.menu.id === action.payload.menu.id) {
-          isInCart = true;
-          return { menu: { ...item.menu, price: action.payload.menu.price }, quantity: item.quantity + action.payload.quantity };
+        if (action.payload.menu.id) {
+          if (item.menu.id && item.menu.id === action.payload.menu.id) {
+            isInCart = true;
+            const currentQuantity = item.quantity + action.payload.quantity;
+            return {
+              menu: { ...item.menu, price: action.payload.menu.price, discount: action.payload.menu.discount },
+              quantity: currentQuantity,
+              subPrice: currentQuantity * (action.payload.menu.price - action.payload.menu.discount),
+            };
+          }
+        } else {
+          if (item.menu.name === action.payload.menu.name) {
+            isInCart = true;
+            const currentQuantity = item.quantity + action.payload.quantity;
+            return {
+              menu: { ...item.menu, price: action.payload.menu.price, discount: action.payload.menu.discount },
+              quantity: currentQuantity,
+              subPrice: currentQuantity * (action.payload.menu.price - action.payload.menu.discount),
+            };
+          }
         }
+
         return item;
       });
 
       // If item not in cart then we add new item
       if (!isInCart) {
-        state.cart = [...state.cart, { menu: action.payload.menu, quantity: action.payload.quantity }];
+        state.cart = [
+          ...state.cart,
+          {
+            menu: action.payload.menu,
+            quantity: action.payload.quantity,
+            subPrice: action.payload.quantity * (action.payload.menu.price - action.payload.menu.discount),
+          },
+        ];
         return;
       }
 
@@ -45,7 +71,7 @@ const cartSlice = createSlice({
     updateCartItem: (state, action: PayloadAction<{ index: number; quantity: number }>) => {
       state.cart = state.cart.map((item, index) => {
         if (index === action.payload.index) {
-          return { ...item, quantity: action.payload.quantity };
+          return { ...item, quantity: action.payload.quantity, subPrice: action.payload.quantity * (item.menu.price - item.menu.discount) };
         }
         return item;
       });
