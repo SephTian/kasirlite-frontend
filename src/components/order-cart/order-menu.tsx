@@ -1,6 +1,6 @@
 'use client';
 import MenuCard from '@/components/order-cart/menu-card';
-import MenuTypeFilter from './menu-type-filter';
+import MenuCategoryFilter from './menu-category-filter';
 import { Menu, MenuCart, MenuCategory } from '@/lib/types';
 import { useSearchParams } from 'next/navigation';
 import { Dispatch, SetStateAction } from 'react';
@@ -47,7 +47,7 @@ export default function OrderMenu({ menus, menuCategories, setModalType, toggleM
   return (
     <>
       <MenuQueryFilter selectedKeyword={menuKeywordParams} />
-      <MenuTypeFilter menuCategories={menuCategories} selectedCategory={menuCategoryParams} />
+      <MenuCategoryFilter menuCategories={menuCategories} selectedCategory={menuCategoryParams} />
       <h1 className="font-semibold">Daftar makanan:</h1>
       <div className="w-full p-2 min-h-0 flex-auto overflow-y-scroll rounded-lg bg-slate-100 shadow-inner">
         <div className="h-fit w-full grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">

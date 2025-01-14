@@ -26,7 +26,7 @@ export default function MenuCategoryFilter({ menuCategories, selectedCategory }:
   return (
     <div className="flex flex-wrap gap-3">
       {/* for all type */}
-      <Link href={`?${createSearchQuery('type', '')}`} replace>
+      <Link href={`?${createSearchQuery('category', '')}`} replace>
         <div
           className={`border border-customOrange rounded-sm ${selectedCategory === '' ? 'bg-customOrange' : 'bg-[#fdfdfd]'} p-2 text-xs font-semibold cursor-pointer hover:bg-customOrange text-nowrap`}
         >
@@ -37,7 +37,7 @@ export default function MenuCategoryFilter({ menuCategories, selectedCategory }:
       {menuCategories.map((item, key) => {
         const isSelected = item.name.toLocaleLowerCase() === selectedCategory;
         return (
-          <Link key={key} href={`?${createSearchQuery('type', selectedCategory === item.name ? '' : item.name)}`} replace>
+          <Link key={key} href={`?${createSearchQuery('category', selectedCategory === item.name ? '' : item.name)}`} replace>
             <div className={`border border-customOrange rounded-sm ${isSelected ? 'bg-customOrange' : 'bg-[#fdfdfd]'} p-2 text-xs font-semibold cursor-pointer hover:bg-customOrange text-nowrap`}>
               {item.name}
             </div>
