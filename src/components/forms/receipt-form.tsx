@@ -13,6 +13,7 @@ import { MdPayments } from 'react-icons/md';
 import LabelTextarea from '../custom-ui/label-textarea';
 import LabelRupiahInput from '../custom-ui/label-rupiah-input';
 import { formatPrice, formatPriceToNumber, formatNumberToPrice, formatRupiah } from '@/utils';
+import { useToast } from '@/hooks/use-toast';
 
 type Props = { tax: number; totalPrice: number };
 
@@ -20,6 +21,7 @@ export default function ReceiptForm({ totalPrice, tax }: Props) {
   const [afterDiscountPrice, setAfterDiscountPrice] = useState(0);
   const [afterDiscountError, setAfterDiscountError] = useState<string | null>(null);
   const { cart } = useSelector((state: RootState) => state.cart);
+  const { toast } = useToast();
   const {
     control,
     trigger,
@@ -51,26 +53,41 @@ export default function ReceiptForm({ totalPrice, tax }: Props) {
 
   // Handling adding transaction
   async function handleAddTransaction(data: ReceiptFormType) {
-    if (!afterDiscountError) {
-      const mappedCart = cart.map((item) => {
-        return {
-          ...item,
-          menu: {
-            id: item.menu.id,
-            name: item.menu.name,
-            price: item.menu.price,
-          },
-        };
-      });
-      await api.addOrder({
-        cart: mappedCart,
-        discount: formatPriceToNumber(data.discount),
-        customerName: data.customerName,
-        note: data.note,
-        totalPrice: totalPrice,
-        type: data.type,
-        paymentType: data.paymentType,
-        paymentKind: data.paymentKind,
+    try {
+      if (!afterDiscountError) {
+        const mappedCart = cart.map((item) => {
+          return {
+            ...item,
+            menu: {
+              id: item.menu.id,
+              name: item.menu.name,
+              price: item.menu.price,
+            },
+          };
+        });
+
+        await api.addTransaction({
+          cart: mappedCart,
+          discount: formatPriceToNumber(data.discount),
+          customerName: 's',
+          note: data.note,
+          totalPrice: totalPrice,
+          type: data.type,
+          paymentType: data.paymentType,
+          paymentKind: data.paymentKind,
+        });
+
+        toast({
+          variant: 'constructive',
+          title: 'Success',
+          description: 'Transaksi baru berhasil dibuat',
+        });
+      }
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Failed',
+        description: (error as Error).message,
       });
     }
   }
@@ -85,7 +102,13 @@ export default function ReceiptForm({ totalPrice, tax }: Props) {
   return (
     <form className="space-y-4" onSubmit={handleSubmit(handleAddTransaction)}>
       {/* Discount section */}
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="grid md:grid-cols-3 gap-4">
+        <div>
+          <LabelRupiahInput readOnly label="Harga" placeholder="" value={formatNumberToPrice(totalPrice)} isError={false} />
+        </div>
+        <div>
+          <LabelRupiahInput readOnly label="Pajak" placeholder="" value={formatNumberToPrice(TOTAL_TAX)} isError={false} />
+        </div>
         <div>
           <Controller
             control={control}
@@ -96,13 +119,9 @@ export default function ReceiptForm({ totalPrice, tax }: Props) {
           />
           {errors.discount && <ErrorInputMessage>{errors.discount.message}</ErrorInputMessage>}
         </div>
-        <div>
-          <LabelRupiahInput readOnly label="Harga setelah diskon" placeholder="" value={formatNumberToPrice(afterDiscountPrice)} isError={afterDiscountError ? true : false} />
-          {afterDiscountError && <ErrorInputMessage>{afterDiscountError}</ErrorInputMessage>}
-        </div>
       </div>
 
-      {/* Payment kind & Order type section */}
+      {/* Payment kind & Transaction type section */}
       <div className="grid md:grid-cols-2 gap-4">
         <div>
           <LabelSelect {...register('paymentKind')} label="Tipe Pembayaran" isError={errors.type ? true : false} isImportant>
@@ -154,12 +173,14 @@ export default function ReceiptForm({ totalPrice, tax }: Props) {
         <LabelTextarea {...register('note')} label="Catatan" isError={errors.note ? true : false} />
         {errors.note && <ErrorInputMessage>{errors.note.message}</ErrorInputMessage>}
       </div>
-
-      <div className="bg-customOrange rounded-md py-2 px-4 text-white shadow-lg">
-        <div className="text-lg flex justify-between items-center">
-          <p className="text-sm">Total Harga:</p>
-          <p className="font-semibold">{formatRupiah(afterDiscountPrice)}</p>
+      <div className="text-center space-y-3">
+        <div className="bg-customOrange w-full rounded-md py-2 px-4 text-white shadow-lg">
+          <div className="text-lg flex justify-between items-center">
+            <p className="text-sm">Total Harga:</p>
+            <p className="font-semibold">{formatRupiah(afterDiscountPrice)}</p>
+          </div>
         </div>
+        {afterDiscountError && <ErrorInputMessage>{afterDiscountError}</ErrorInputMessage>}
       </div>
 
       {/* button section */}
