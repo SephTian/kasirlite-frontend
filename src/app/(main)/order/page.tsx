@@ -14,17 +14,17 @@ export default async function OrderPage({ searchParams }: { searchParams?: { [ke
     redirect('/login');
   }
 
-  const [menus, menuTypes] = await Promise.all([
+  const [menus, menuCategories] = await Promise.all([
     api.getMenus({
       params: {
         keyword: searchParams?.keyword || '',
-        type: searchParams?.type || '',
+        category: searchParams?.category || '',
       },
       headers: {
         Authorization: 'Bearer your_token_here', // Token untuk otentikasi
       },
     }),
-    api.getMenuTypes({
+    api.getMenuCategories({
       headers: {
         Authorization: 'Bearer your_token_here', // Token untuk otentikasi
       },
@@ -33,7 +33,7 @@ export default async function OrderPage({ searchParams }: { searchParams?: { [ke
 
   return (
     <div className="w-full p-4 sm:h-[calc(100vh-86px)] grid grid-cols-1 sm:grid-cols-6 border rounded-lg bg-[#fdfdfd] gap-3">
-      <Order menuTypes={menuTypes} menus={menus} />
+      <Order menuCategories={menuCategories} menus={menus} />
     </div>
   );
 }

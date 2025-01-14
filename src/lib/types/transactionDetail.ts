@@ -1,9 +1,9 @@
 import { Menu } from './menu';
-import { Order } from './order';
+import { Transaction } from './transaction';
 
-export type OrderDetail = {
+export type TransactionDetail = {
   id: number;
-  orderId: Pick<Order, 'id'>;
+  transactionId: Pick<Transaction, 'id'>;
   menu?: Menu | null;
   menuName: string;
   quantity: number;

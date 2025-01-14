@@ -1,5 +1,5 @@
 import fetchAxios from '@/utils/axios';
-import { LoginFormData, OrderFormData } from '../types';
+import { LoginFormData, TransactionFormData } from '../types';
 
 const api = (() => {
   async function login({ email, password, ...option }: LoginFormData) {
@@ -34,61 +34,51 @@ const api = (() => {
     return menus;
   }
 
-  async function getMenuTypes({ ...option }) {
+  async function getMenuCategories({ ...option }) {
     const {
       data: { data, status, message },
-    } = await fetchAxios.get(`/api/menutypes`, { ...option });
+    } = await fetchAxios.get(`/api/menu-categories`, { ...option });
 
     if (status !== 'ok') {
       throw new Error(message);
     }
 
-    const { menuTypes } = data;
+    const { menuCategories } = data;
 
-    return menuTypes;
+    return menuCategories;
   }
 
-  async function addOrder({ menus, totalPrice, discount, customerName, note, type, paymentType, paymentKind, ...option }: OrderFormData) {
-    console.log({
-      menus: menus,
-      totalPrice: totalPrice,
-      discount: discount,
-      customerName: customerName,
-      note: note ?? '',
-      type: type,
-      paymentType: paymentType,
-      paymentKind: paymentKind,
-    });
-    // const {
-    //   data: { data, status, message },
-    // } = await fetchAxios.post(
-    //   `/api/menu`,
-    //   {
-    //     menus: menus,
-    //     totalPrice: totalPrice,
-    //     tax: tax,
-    //     discount: discount,
-    //     name: name,
-    //     note: note,
-    //     type: type,
-    //     paymentType: paymentType,
-    //   },
-    //   { ...option }
-    // );
+  async function addTransaction({ cart, totalPrice, discount, customerName, note, type, paymentType, paymentKind, ...option }: TransactionFormData) {
+    const {
+      data: { data, status, message },
+    } = await fetchAxios.post(
+      `/api/transactions`,
+      {
+        cart: cart,
+        totalPrice: totalPrice,
+        discount: discount,
+        customerName: customerName,
+        note: note ?? '',
+        type: type,
+        paymentType: paymentType || null,
+        paymentKind: paymentKind,
+      },
+      { ...option }
+    );
 
-    // if (status !== 'ok') {
-    //   throw new Error(message);
-    // }
+    if (status !== 'ok') {
+      throw new Error(message);
+    }
 
-    // const { Order } = data;
+    console.log(data, status, message);
 
     // return Order;
   }
   return {
     login,
     getMenus,
-    getMenuTypes,
-    addOrder,
+    getMenuCategories,
+    addTransaction,
   };
 })();
 

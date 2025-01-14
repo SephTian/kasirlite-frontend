@@ -1,7 +1,7 @@
 'use client';
 import MenuCard from '@/components/order-cart/menu-card';
 import MenuTypeFilter from './menu-type-filter';
-import { Menu, MenuCart, MenuType } from '@/lib/types';
+import { Menu, MenuCart, MenuCategory } from '@/lib/types';
 import { useSearchParams } from 'next/navigation';
 import { Dispatch, SetStateAction } from 'react';
 import { useDispatch } from 'react-redux';
@@ -11,15 +11,15 @@ import MenuQueryFilter from './menu-query-filter';
 
 type Props = {
   menus: Menu[];
-  menuTypes: MenuType[];
+  menuCategories: MenuCategory[];
   setModalType: Dispatch<SetStateAction<'add' | 'edit'>>;
   toggleModal: () => void;
 };
 
-export default function OrderMenu({ menus, menuTypes, setModalType, toggleModal }: Props) {
+export default function OrderMenu({ menus, menuCategories, setModalType, toggleModal }: Props) {
   const dispatch: AppDispatch = useDispatch();
   const searchParams = useSearchParams();
-  const menuTypeParams = searchParams.get('type')?.toLowerCase() || '';
+  const menuCategoryParams = searchParams.get('category')?.toLowerCase() || '';
   const menuKeywordParams = searchParams.get('keyword')?.toLowerCase() || '';
 
   // Add cart to
@@ -47,7 +47,7 @@ export default function OrderMenu({ menus, menuTypes, setModalType, toggleModal 
   return (
     <>
       <MenuQueryFilter selectedKeyword={menuKeywordParams} />
-      <MenuTypeFilter menuTypes={menuTypes} selectedType={menuTypeParams} />
+      <MenuTypeFilter menuCategories={menuCategories} selectedCategory={menuCategoryParams} />
       <h1 className="font-semibold">Daftar makanan:</h1>
       <div className="w-full p-2 min-h-0 flex-auto overflow-y-scroll rounded-lg bg-slate-100 shadow-inner">
         <div className="h-fit w-full grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">

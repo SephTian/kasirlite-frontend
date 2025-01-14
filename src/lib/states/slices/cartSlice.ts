@@ -29,7 +29,7 @@ const cartSlice = createSlice({
         // Checking if item in cart, so the quantity will be incremented
         if (item.menu.id === action.payload.menu.id) {
           isInCart = true;
-          return { ...item, quantity: item.quantity + action.payload.quantity };
+          return { menu: { ...item.menu, price: action.payload.menu.price }, quantity: item.quantity + action.payload.quantity };
         }
         return item;
       });

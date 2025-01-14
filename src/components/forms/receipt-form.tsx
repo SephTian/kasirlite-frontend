@@ -12,15 +12,14 @@ import LabelSelect from '../custom-ui/label-select';
 import { MdPayments } from 'react-icons/md';
 import LabelTextarea from '../custom-ui/label-textarea';
 import LabelRupiahInput from '../custom-ui/label-rupiah-input';
-import { formatPrice, formatPriceToNumber, formatNumberToPrice } from '@/utils';
+import { formatPrice, formatPriceToNumber, formatNumberToPrice, formatRupiah } from '@/utils';
 
-type Props = { totalPriceWithTax: number; totalPrice: number };
+type Props = { tax: number; totalPrice: number };
 
-export default function ReceiptForm({ totalPrice, totalPriceWithTax }: Props) {
+export default function ReceiptForm({ totalPrice, tax }: Props) {
   const [afterDiscountPrice, setAfterDiscountPrice] = useState(0);
   const [afterDiscountError, setAfterDiscountError] = useState<string | null>(null);
   const { cart } = useSelector((state: RootState) => state.cart);
-
   const {
     control,
     trigger,
@@ -35,24 +34,36 @@ export default function ReceiptForm({ totalPrice, totalPriceWithTax }: Props) {
     },
     resolver: zodResolver(receiptFormSchema),
   });
+  const TOTAL_TAX = totalPrice * tax;
+  const TOTAL_PRICE_WITH_TAX = totalPrice + TOTAL_TAX;
 
   // Calculating after discount price
   const discountFormValue = watch('discount');
   useEffect(() => {
     const unformated = formatPriceToNumber(discountFormValue === '' ? '0' : discountFormValue); // formatting dicount from 11.500 to 11500
-    setAfterDiscountPrice(totalPriceWithTax - unformated);
-    if (totalPriceWithTax - unformated < 0) {
+    setAfterDiscountPrice(TOTAL_PRICE_WITH_TAX - unformated);
+    if (TOTAL_PRICE_WITH_TAX - unformated < 0) {
       setAfterDiscountError('Harga setelah diskon tidak boleh dibawah 0'); // make error if the price after discount below 0
       return;
     }
     setAfterDiscountError(null);
-  }, [totalPriceWithTax, discountFormValue]);
+  }, [TOTAL_PRICE_WITH_TAX, discountFormValue]);
 
   // Handling adding transaction
   async function handleAddTransaction(data: ReceiptFormType) {
     if (!afterDiscountError) {
+      const mappedCart = cart.map((item) => {
+        return {
+          ...item,
+          menu: {
+            id: item.menu.id,
+            name: item.menu.name,
+            price: item.menu.price,
+          },
+        };
+      });
       await api.addOrder({
-        menus: cart,
+        cart: mappedCart,
         discount: formatPriceToNumber(data.discount),
         customerName: data.customerName,
         note: data.note,
@@ -142,6 +153,13 @@ export default function ReceiptForm({ totalPrice, totalPriceWithTax }: Props) {
       <div>
         <LabelTextarea {...register('note')} label="Catatan" isError={errors.note ? true : false} />
         {errors.note && <ErrorInputMessage>{errors.note.message}</ErrorInputMessage>}
+      </div>
+
+      <div className="bg-customOrange rounded-md py-2 px-4 text-white shadow-lg">
+        <div className="text-lg flex justify-between items-center">
+          <p className="text-sm">Total Harga:</p>
+          <p className="font-semibold">{formatRupiah(afterDiscountPrice)}</p>
+        </div>
       </div>
 
       {/* button section */}

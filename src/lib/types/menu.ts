@@ -1,17 +1,17 @@
-import { MenuType } from './menuType';
+import { MenuCategory } from './menuCategory';
 
 export type Menu = {
   id: number;
   image: string;
   name: string;
-  menuType: MenuType;
+  menuCategory: MenuCategory;
   price: number;
   discount: number;
   disabled: boolean;
 };
 
 export type MenuCart = {
-  menu: Omit<Menu, 'disabled' | 'menuType' | 'menuTypeId'>;
+  menu: Omit<Menu, 'disabled' | 'menuCategory'>;
   quantity: number;
 };
 

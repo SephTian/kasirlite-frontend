@@ -3,14 +3,14 @@
 import React, { useCallback } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { MenuType } from '@/lib/types';
+import { MenuCategory } from '@/lib/types';
 
 type Props = {
-  menuTypes: MenuType[];
-  selectedType: string;
+  menuCategories: MenuCategory[];
+  selectedCategory: string;
 };
 
-export default function MenuTypeFilter({ menuTypes, selectedType }: Props) {
+export default function MenuCategoryFilter({ menuCategories, selectedCategory }: Props) {
   const searchParams = useSearchParams();
 
   // create search params
@@ -27,15 +27,17 @@ export default function MenuTypeFilter({ menuTypes, selectedType }: Props) {
     <div className="flex flex-wrap gap-3">
       {/* for all type */}
       <Link href={`?${createSearchQuery('type', '')}`} replace>
-        <div className={`border border-customOrange rounded-sm ${selectedType === '' ? 'bg-customOrange' : 'bg-[#fdfdfd]'} p-2 text-xs font-semibold cursor-pointer hover:bg-customOrange text-nowrap`}>
+        <div
+          className={`border border-customOrange rounded-sm ${selectedCategory === '' ? 'bg-customOrange' : 'bg-[#fdfdfd]'} p-2 text-xs font-semibold cursor-pointer hover:bg-customOrange text-nowrap`}
+        >
           Semua
         </div>
       </Link>
       {/* for custom type */}
-      {menuTypes.map((item, key) => {
-        const isSelected = item.name.toLocaleLowerCase() === selectedType;
+      {menuCategories.map((item, key) => {
+        const isSelected = item.name.toLocaleLowerCase() === selectedCategory;
         return (
-          <Link key={key} href={`?${createSearchQuery('type', selectedType === item.name ? '' : item.name)}`} replace>
+          <Link key={key} href={`?${createSearchQuery('type', selectedCategory === item.name ? '' : item.name)}`} replace>
             <div className={`border border-customOrange rounded-sm ${isSelected ? 'bg-customOrange' : 'bg-[#fdfdfd]'} p-2 text-xs font-semibold cursor-pointer hover:bg-customOrange text-nowrap`}>
               {item.name}
             </div>
