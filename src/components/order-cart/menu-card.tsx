@@ -3,14 +3,14 @@ import { formatRupiah } from '@/utils';
 import foodItem from '@/assets/food-item.png';
 import Image from 'next/image';
 import React from 'react';
-type Props = Omit<Menu, 'menuType'> & {
+type Props = Omit<Menu, 'menuCategory'> & {
   onAddCart?: (param: MenuCart['menu']) => void;
 };
 
 export default function MenuCard({ id, image, name, price, discount, disabled, onAddCart }: Props) {
   const handleClick = () => {
     if (!disabled) {
-      onAddCart?.({ id, name, price, discount, image });
+      onAddCart?.({ id, name, price: Number(price), discount: Number(discount), image });
     }
   };
 

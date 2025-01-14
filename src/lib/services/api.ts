@@ -1,6 +1,6 @@
 import fetchAxios from '@/utils/axios';
 import { LoginFormData, TransactionFormData } from '../types';
-import { AxiosError } from 'axios';
+import { AxiosError, AxiosRequestConfig } from 'axios';
 
 const api = (() => {
   async function login({ email, password, ...option }: LoginFormData) {
@@ -27,7 +27,7 @@ const api = (() => {
     }
   }
 
-  async function getMenus({ ...option }) {
+  async function getMenus({ ...option }: AxiosRequestConfig) {
     try {
       const {
         data: { data, status, message },
@@ -47,7 +47,7 @@ const api = (() => {
     }
   }
 
-  async function getMenuCategories({ ...option }) {
+  async function getMenuCategories({ ...option }: AxiosRequestConfig) {
     try {
       const {
         data: { data, status, message },
@@ -67,7 +67,7 @@ const api = (() => {
     }
   }
 
-  async function addTransaction({ cart, totalPrice, discount, customerName, note, type, paymentType, paymentKind, ...option }: TransactionFormData) {
+  async function addTransaction({ cart, totalPrice, discount, customerName, note, type, paymentType, paymentKind }: TransactionFormData, option: AxiosRequestConfig) {
     try {
       const {
         data: { data, status, message },

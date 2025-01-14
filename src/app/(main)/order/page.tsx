@@ -21,12 +21,12 @@ export default async function OrderPage({ searchParams }: { searchParams?: { [ke
         category: searchParams?.category || '',
       },
       headers: {
-        Authorization: 'Bearer your_token_here', // Token untuk otentikasi
+        Authorization: `Bearer ${session.accessToken}`, // Token untuk otentikasi
       },
     }),
     api.getMenuCategories({
       headers: {
-        Authorization: 'Bearer your_token_here', // Token untuk otentikasi
+        Authorization: `Bearer ${session.accessToken}`, // Token untuk otentikasi
       },
     }),
   ]);

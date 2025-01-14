@@ -1,10 +1,11 @@
-import { MenuCart } from './menu';
+import { Menu, MenuCart } from './menu';
 import { TransactionDetail } from './transactionDetail';
 import { Payment } from './payment';
 import { User } from './user';
 
 export type Transaction = {
   id: number; // dri BE
+  userId: number;
   cashier: Pick<User, 'id' | 'name'>; // dri BE
   status: string; // dri BE
   tax: number; // input dari pengguna
@@ -12,7 +13,7 @@ export type Transaction = {
   totalPrice: number; // input dari pengguna
   customerName: string; // input dari pengguna
   note: string; // input dari pengguna
-  type: string; // input dari pengguna
+  type: 'DIBUNGKUS' | 'DIANTAR' | 'DITEMPAT'; // input dari pengguna
   date: string; // dri BE
   menus: TransactionDetail[]; // input dari pengguna
   payments: Payment[]; // dri BE
@@ -20,8 +21,10 @@ export type Transaction = {
 
 export type TransactionFormData = Pick<Transaction, 'discount' | 'totalPrice' | 'customerName' | 'type'> & {
   cart: {
+    menuId?: Menu['id'] | null;
+    menuName: Menu['name'];
     quantity: MenuCart['quantity'];
-    menu: Pick<MenuCart['menu'], 'id' | 'name' | 'price'>;
+    subPrice: MenuCart['subPrice'];
   }[];
   note?: string | null;
   paymentType?: string | null; // input dari pengguna

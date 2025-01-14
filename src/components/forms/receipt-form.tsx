@@ -14,6 +14,7 @@ import LabelTextarea from '../custom-ui/label-textarea';
 import LabelRupiahInput from '../custom-ui/label-rupiah-input';
 import { formatPrice, formatPriceToNumber, formatNumberToPrice, formatRupiah } from '@/utils';
 import { useToast } from '@/hooks/use-toast';
+import { getSession } from 'next-auth/react';
 
 type Props = { tax: number; totalPrice: number };
 
@@ -22,6 +23,7 @@ export default function ReceiptForm({ totalPrice, tax }: Props) {
   const [afterDiscountError, setAfterDiscountError] = useState<string | null>(null);
   const { cart } = useSelector((state: RootState) => state.cart);
   const { toast } = useToast();
+
   const {
     control,
     trigger,
@@ -53,29 +55,36 @@ export default function ReceiptForm({ totalPrice, tax }: Props) {
 
   // Handling adding transaction
   async function handleAddTransaction(data: ReceiptFormType) {
+    const session = await getSession();
+
     try {
       if (!afterDiscountError) {
         const mappedCart = cart.map((item) => {
           return {
-            ...item,
-            menu: {
-              id: item.menu.id,
-              name: item.menu.name,
-              price: item.menu.price,
-            },
+            menuId: item.menu.id || null,
+            menuName: item.menu.name,
+            quantity: item.quantity,
+            subPrice: item.subPrice,
           };
         });
 
-        await api.addTransaction({
-          cart: mappedCart,
-          discount: formatPriceToNumber(data.discount),
-          customerName: 's',
-          note: data.note,
-          totalPrice: totalPrice,
-          type: data.type,
-          paymentType: data.paymentType,
-          paymentKind: data.paymentKind,
-        });
+        await api.addTransaction(
+          {
+            cart: mappedCart,
+            discount: formatPriceToNumber(data.discount),
+            customerName: data.customerName,
+            note: data.note,
+            totalPrice: totalPrice,
+            type: data.type,
+            paymentType: data.paymentType,
+            paymentKind: data.paymentKind,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${session?.accessToken}`,
+            },
+          }
+        );
 
         toast({
           variant: 'constructive',
@@ -125,8 +134,8 @@ export default function ReceiptForm({ totalPrice, tax }: Props) {
       <div className="grid md:grid-cols-2 gap-4">
         <div>
           <LabelSelect {...register('paymentKind')} label="Tipe Pembayaran" isError={errors.type ? true : false} isImportant>
-            <option value="N">Bayar Nanti</option>
-            <option value="L">Bayar Langsung</option>
+            <option value="L">Bayar Nanti</option>
+            <option value="N">Bayar Langsung</option>
           </LabelSelect>
           {errors.paymentKind && <ErrorInputMessage>{errors.paymentKind.message}</ErrorInputMessage>}
         </div>
@@ -141,7 +150,7 @@ export default function ReceiptForm({ totalPrice, tax }: Props) {
       </div>
 
       {/* admin must add payment kind if want to pay now */}
-      {watch('paymentKind') === 'L' && (
+      {watch('paymentKind') === 'N' && (
         <div>
           <label className="block text-sm mb-1">Metode Pembayaran</label>
           <div className="flex flex-wrap gap-2">

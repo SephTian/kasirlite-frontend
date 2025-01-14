@@ -20,12 +20,11 @@ export default function ReceiptTable({ cart, handleEditModal }: Props) {
         </thead>
         <tbody className="text-xs text-customBlack">
           {cart.map((item, idx) => {
-            const itemPrice = (item.menu.price - item.menu.discount) * item.quantity;
             return (
               <tr key={idx} onClick={() => handleEditModal?.(idx)} className="odd:bg-slate-300 even:bg-slate-200 w-full cursor-pointer">
                 <td className="px-2 py-4">{item.quantity}</td>
                 <td className="px-2 py-4">{item.menu.name}</td>
-                <td className="px-2 py-4 font-semibold">{formatRupiah(itemPrice)}</td>
+                <td className="px-2 py-4 font-semibold">{formatRupiah(item.subPrice)}</td>
               </tr>
             );
           })}

@@ -2,7 +2,8 @@ import { MenuCategory } from './menuCategory';
 
 export type Menu = {
   id: number;
-  image: string;
+  menuCategoryId: number;
+  image?: string | null;
   name: string;
   menuCategory: MenuCategory;
   price: number;
@@ -11,8 +12,9 @@ export type Menu = {
 };
 
 export type MenuCart = {
-  menu: Omit<Menu, 'disabled' | 'menuCategory'>;
+  menu: Omit<Menu, 'disabled' | 'menuCategory' | 'menuCategoryId' | 'id'> & {
+    id?: number | null;
+  };
+  subPrice: number;
   quantity: number;
 };
-
-// additional: menu[];

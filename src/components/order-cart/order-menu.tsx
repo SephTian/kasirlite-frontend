@@ -24,7 +24,8 @@ export default function OrderMenu({ menus, menuCategories, setModalType, toggleM
 
   // Add cart to
   const handleAddCart = (inputMenu: MenuCart['menu']) => {
-    dispatch(setSelectedMenu({ menu: inputMenu, quantity: 1, menuIndex: null }));
+    //console.log(inputMenu);
+    dispatch(setSelectedMenu({ menu: inputMenu, quantity: 1, subPrice: inputMenu.price, menuIndex: null }));
     setModalType('add');
     toggleModal();
   };
