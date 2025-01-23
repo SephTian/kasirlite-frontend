@@ -1,7 +1,7 @@
 import { MenuCategory } from './menuCategory';
 
 export type Menu = {
-  id: number;
+  id: number | bigint;
   menuCategoryId: number;
   image?: string | null;
   name: string;

@@ -1,5 +1,5 @@
 export type PaymentType = {
-  id: number;
+  id: number | bigint;
   name: string;
   tax: number;
 };

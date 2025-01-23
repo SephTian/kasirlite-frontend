@@ -1,5 +1,5 @@
 export type MenuCategory = {
-  id: number; // dri BE
+  id: number | bigint; // dri BE
   name: string;
   isAdditional: boolean;
 };

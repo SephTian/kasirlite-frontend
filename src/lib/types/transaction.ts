@@ -4,7 +4,7 @@ import { Payment } from './payment';
 import { User } from './user';
 
 export type Transaction = {
-  id: number; // dri BE
+  id: number | bigint; // dri BE
   userId: number;
   cashier: Pick<User, 'id' | 'name'>; // dri BE
   status: string; // dri BE
@@ -12,7 +12,7 @@ export type Transaction = {
   discount: number; // input dari pengguna
   totalPrice: number; // input dari pengguna
   customerName: string; // input dari pengguna
-  note: string; // input dari pengguna
+  note?: string | null; // input dari pengguna
   type: 'DIBUNGKUS' | 'DIANTAR' | 'DITEMPAT'; // input dari pengguna
   date: string; // dri BE
   menus: TransactionDetail[]; // input dari pengguna
