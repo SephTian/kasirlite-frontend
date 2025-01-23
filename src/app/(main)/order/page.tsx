@@ -16,8 +16,8 @@ export default async function OrderPage({ searchParams }: { searchParams?: { [ke
   }
 
   // taking params from url
-  const keywordParams = searchParams?.keyword || '';
-  const categoryParams = searchParams?.category || '';
+  const keywordParams = (searchParams?.keyword as string)?.toLowerCase() || '';
+  const categoryParams = (searchParams?.category as string)?.toLowerCase() || '';
 
   // setting up tanstack query
   const queryClient = new QueryClient();
