@@ -13,7 +13,7 @@ export type Menu = {
 
 export type MenuCart = {
   menu: Omit<Menu, 'disabled' | 'menuCategory' | 'menuCategoryId' | 'id'> & {
-    id?: number | null;
+    id?: number | bigint | null;
   };
   subPrice: number;
   quantity: number;
