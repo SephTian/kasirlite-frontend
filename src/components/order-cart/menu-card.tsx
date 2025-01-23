@@ -4,13 +4,13 @@ import foodItem from '@/assets/food-item.png';
 import Image from 'next/image';
 import React from 'react';
 type Props = Omit<Menu, 'menuCategoryId' | 'menuCategory'> & {
-  onAddCart?: (param: MenuCart['menu']) => void;
+  onOpenAddCartModal?: (param: MenuCart['menu']) => void;
 };
 
-export default function MenuCard({ id, image, name, price, discount, disabled, onAddCart }: Props) {
+export default function MenuCard({ id, image, name, price, discount, disabled, onOpenAddCartModal }: Props) {
   const handleClick = () => {
     if (!disabled) {
-      onAddCart?.({ id, name, price: Number(price), discount: Number(discount), image });
+      onOpenAddCartModal?.({ id, name, price: Number(price), discount: Number(discount), image });
     }
   };
 

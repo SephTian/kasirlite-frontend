@@ -1,6 +1,7 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import Order from '@/components/order-cart/order';
 import api from '@/lib/services/api';
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
@@ -14,26 +15,40 @@ export default async function OrderPage({ searchParams }: { searchParams?: { [ke
     redirect('/login');
   }
 
-  const [menus, menuCategories] = await Promise.all([
-    api.getMenus({
-      params: {
-        keyword: searchParams?.keyword || '',
-        category: searchParams?.category || '',
-      },
-      headers: {
-        Authorization: `Bearer ${session.accessToken}`, // Token untuk otentikasi
-      },
-    }),
-    api.getMenuCategories({
-      headers: {
-        Authorization: `Bearer ${session.accessToken}`, // Token untuk otentikasi
-      },
-    }),
-  ]);
+  // taking params from url
+  const keywordParams = searchParams?.keyword || '';
+  const categoryParams = searchParams?.category || '';
+
+  // setting up tanstack query
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: ['menus', keywordParams, categoryParams],
+    queryFn: () =>
+      api.getMenus({
+        params: {
+          keyword: keywordParams,
+          category: categoryParams,
+        },
+        headers: {
+          Authorization: `Bearer ${session.accessToken}`, // Token untuk otentikasi
+        },
+      }),
+  });
+  await queryClient.prefetchQuery({
+    queryKey: ['menuCategories'],
+    queryFn: () =>
+      api.getMenuCategories({
+        headers: {
+          Authorization: `Bearer ${session.accessToken}`, // Token untuk otentikasi
+        },
+      }),
+  });
 
   return (
     <div className="w-full p-4 sm:h-[calc(100vh-86px)] grid grid-cols-1 sm:grid-cols-6 border rounded-lg bg-[#fdfdfd] gap-3">
-      <Order menuCategories={menuCategories} menus={menus} />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Order />
+      </HydrationBoundary>
     </div>
   );
 }

@@ -2,6 +2,7 @@
 
 import { store } from '@/lib/states';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { SessionProvider } from 'next-auth/react';
 import { ReactNode } from 'react';
 import { Provider } from 'react-redux';
@@ -16,7 +17,10 @@ const Providers = ({ children }: Props) => {
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
-        <SessionProvider>{children}</SessionProvider>
+        <SessionProvider>
+          {children}
+          <ReactQueryDevtools initialIsOpen={false} />
+        </SessionProvider>
       </Provider>
     </QueryClientProvider>
   );
