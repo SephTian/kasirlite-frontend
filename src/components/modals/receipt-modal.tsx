@@ -24,7 +24,7 @@ export default function ReceiptModal({ isOpen, closeModal, tax }: Props) {
       {/* Card Body */}
       <div className="h-full w-full">
         <div className="text-center text-sm font-semibold text-gray-500 my-4">Masukkan detil pembayaran</div>
-        <ReceiptForm totalPrice={totalPrice} tax={tax} />
+        <ReceiptForm totalPrice={totalPrice} tax={tax} closeModal={closeModal} />
       </div>
     </ModalWrapper>
   );
