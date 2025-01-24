@@ -22,7 +22,7 @@ export default async function OrderPage({ searchParams }: { searchParams?: { [ke
   // setting up tanstack query
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
-    queryKey: ['menus', keywordParams, categoryParams],
+    queryKey: ['getMenus', keywordParams, categoryParams],
     queryFn: () =>
       api.getMenus({
         params: {
@@ -35,7 +35,7 @@ export default async function OrderPage({ searchParams }: { searchParams?: { [ke
       }),
   });
   await queryClient.prefetchQuery({
-    queryKey: ['menuCategories'],
+    queryKey: ['getMenuCategories'],
     queryFn: () =>
       api.getMenuCategories({
         headers: {

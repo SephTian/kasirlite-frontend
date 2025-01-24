@@ -26,7 +26,7 @@ export default function OrderMenu({ setModalType, toggleModal }: Props) {
 
   // menu data with tanstack query
   const menuData = useQuery({
-    queryKey: ['menus', menuKeywordParams, menuCategoryParams],
+    queryKey: ['getMenus', menuKeywordParams, menuCategoryParams],
     queryFn: async () => {
       const session = await getSession();
       return api.getMenus({
@@ -45,7 +45,7 @@ export default function OrderMenu({ setModalType, toggleModal }: Props) {
 
   // menu category data with tanstack query
   const menuCategoryData = useQuery({
-    queryKey: ['menuCategories'],
+    queryKey: ['getMenuCategories'],
     queryFn: async () => {
       const session = await getSession();
       return api.getMenuCategories({

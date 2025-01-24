@@ -6,8 +6,8 @@ import { receiptFormSchema, ReceiptFormType } from '@/lib/schemas/receiptSchema'
 import { zodResolver } from '@hookform/resolvers/zod';
 import ErrorInputMessage from '../custom-ui/error-input-message';
 import api from '@/lib/services/api';
-import { RootState } from '@/lib/states';
-import { useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/lib/states';
+import { useDispatch, useSelector } from 'react-redux';
 import LabelSelect from '../custom-ui/label-select';
 import { MdPayments } from 'react-icons/md';
 import LabelTextarea from '../custom-ui/label-textarea';
@@ -15,14 +15,18 @@ import LabelRupiahInput from '../custom-ui/label-rupiah-input';
 import { formatPrice, formatPriceToNumber, formatNumberToPrice, formatRupiah } from '@/utils';
 import { useToast } from '@/hooks/use-toast';
 import { getSession } from 'next-auth/react';
+import { unsetCart } from '@/lib/states/slices/cartSlice';
 
-type Props = { tax: number; totalPrice: number };
+type Props = { tax: number; totalPrice: number; closeModal: () => void };
 
-export default function ReceiptForm({ totalPrice, tax }: Props) {
-  const [afterDiscountPrice, setAfterDiscountPrice] = useState(0);
-  const [afterDiscountError, setAfterDiscountError] = useState<string | null>(null);
+export default function ReceiptForm({ totalPrice, tax, closeModal }: Props) {
   const { cart } = useSelector((state: RootState) => state.cart);
+  const dispatch: AppDispatch = useDispatch();
   const { toast } = useToast();
+
+  //untuk set after discount
+  const [finalPrice, setFinalPrice] = useState(0);
+  const [finalPriceError, setFinalPriceError] = useState<string | null>(null);
 
   const {
     control,
@@ -44,13 +48,13 @@ export default function ReceiptForm({ totalPrice, tax }: Props) {
   // Calculating after discount price
   const discountFormValue = watch('discount');
   useEffect(() => {
-    const unformated = formatPriceToNumber(discountFormValue === '' ? '0' : discountFormValue); // formatting dicount from 11.500 to 11500
-    setAfterDiscountPrice(TOTAL_PRICE_WITH_TAX - unformated);
-    if (TOTAL_PRICE_WITH_TAX - unformated < 0) {
-      setAfterDiscountError('Harga setelah diskon tidak boleh dibawah 0'); // make error if the price after discount below 0
+    const unformatedDiscount = formatPriceToNumber(discountFormValue === '' ? '0' : discountFormValue); // formatting dicount from 11.500 to 11500
+    setFinalPrice(TOTAL_PRICE_WITH_TAX - unformatedDiscount);
+    if (TOTAL_PRICE_WITH_TAX - unformatedDiscount < 0) {
+      setFinalPriceError('Harga setelah diskon tidak boleh dibawah 0'); // make error if the price after discount below 0
       return;
     }
-    setAfterDiscountError(null);
+    setFinalPriceError(null);
   }, [TOTAL_PRICE_WITH_TAX, discountFormValue]);
 
   // Handling adding transaction
@@ -58,7 +62,7 @@ export default function ReceiptForm({ totalPrice, tax }: Props) {
     const session = await getSession();
 
     try {
-      if (!afterDiscountError) {
+      if (!finalPriceError) {
         const mappedCart = cart.map((item) => {
           return {
             menuId: item.menu.id || null,
@@ -68,7 +72,7 @@ export default function ReceiptForm({ totalPrice, tax }: Props) {
           };
         });
 
-        await api.addTransaction(
+        const transaction = await api.addTransaction(
           {
             cart: mappedCart,
             discount: formatPriceToNumber(data.discount),
@@ -85,6 +89,15 @@ export default function ReceiptForm({ totalPrice, tax }: Props) {
             },
           }
         );
+        console.log(transaction);
+
+        //@TODO buat close modal -- done
+        closeModal();
+        dispatch(unsetCart());
+
+        //@TODO arahin ke halaman transaction id
+
+        //@TODO ubah ke usemutation
 
         toast({
           variant: 'constructive',
@@ -105,7 +118,7 @@ export default function ReceiptForm({ totalPrice, tax }: Props) {
   const handleDiscountChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
     setValue('discount', formatPrice(input));
-    trigger('discount');
+    trigger('discount'); // trigger the validation schema
   };
 
   return (
@@ -186,10 +199,10 @@ export default function ReceiptForm({ totalPrice, tax }: Props) {
         <div className="bg-customOrange w-full rounded-md py-2 px-4 text-white shadow-lg">
           <div className="text-lg flex justify-between items-center">
             <p className="text-sm">Total Harga:</p>
-            <p className="font-semibold">{formatRupiah(afterDiscountPrice)}</p>
+            <p className="font-semibold">{formatRupiah(finalPrice)}</p>
           </div>
         </div>
-        {afterDiscountError && <ErrorInputMessage>{afterDiscountError}</ErrorInputMessage>}
+        {finalPriceError && <ErrorInputMessage>{finalPriceError}</ErrorInputMessage>}
       </div>
 
       {/* button section */}
