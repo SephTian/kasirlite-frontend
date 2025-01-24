@@ -25,7 +25,11 @@ export default function OrderMenu({ setModalType, toggleModal }: Props) {
   const menuCategoryParams = searchParams.get('category')?.toLowerCase() || '';
 
   // menu data with tanstack query
-  const menuData = useQuery({
+  const {
+    data: menuData,
+    isPending: menuPending,
+    error: menuError,
+  } = useQuery({
     queryKey: ['getMenus', menuKeywordParams, menuCategoryParams],
     queryFn: async () => {
       const session = await getSession();
@@ -44,7 +48,7 @@ export default function OrderMenu({ setModalType, toggleModal }: Props) {
   });
 
   // menu category data with tanstack query
-  const menuCategoryData = useQuery({
+  const { data: menuCategoryData } = useQuery({
     queryKey: ['getMenuCategories'],
     queryFn: async () => {
       const session = await getSession();
@@ -68,11 +72,11 @@ export default function OrderMenu({ setModalType, toggleModal }: Props) {
   return (
     <>
       <MenuQueryFilter selectedKeyword={menuKeywordParams} />
-      {menuCategoryData.data ? <MenuCategoryFilter menuCategories={menuCategoryData.data} selectedCategory={menuCategoryParams} /> : <p>Silahkan muat ulang halaman</p>}
+      {menuCategoryData ? <MenuCategoryFilter menuCategories={menuCategoryData} selectedCategory={menuCategoryParams} /> : <p>Silahkan muat ulang halaman</p>}
       <h1 className="font-semibold">Daftar makanan:</h1>
       <div className="w-full p-2 min-h-0 flex-auto overflow-y-scroll rounded-lg bg-slate-100 shadow-inner">
-        {menuData.error && <p>Silahkan muat ulang halaman</p>}
-        {menuData.data && <MenuList onOpenAddCartModal={handleOpenAddCartModal} menus={menuData.data.menus}></MenuList>}
+        {menuData && !menuPending && <MenuList onOpenAddCartModal={handleOpenAddCartModal} menus={menuData.menus}></MenuList>}
+        {menuError && !menuPending && <p className="font-semibold">Silahkan refresh halaman!</p>}
       </div>
     </>
   );
