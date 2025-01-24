@@ -5,6 +5,7 @@ import CartDetailModal from '../modals/cart-detail-modal';
 import useModal from '@/hooks/useModal';
 import { useState } from 'react';
 import ReceiptModal from '../modals/receipt-modal';
+import { TAX } from '@/utils/constan';
 
 export default function Order() {
   // modal
@@ -13,9 +14,6 @@ export default function Order() {
 
   // state for cart modal
   const [cartModalType, setCartModalType] = useState<'add' | 'edit'>('add');
-
-  // tax
-  const TAX: number = 0.11; // PPN 11%
 
   return (
     <>
