@@ -11,14 +11,22 @@ function loading() {
   }
 
   return (
-    <div className="w-full min-h-[80vh] grid grid-cols-4 gap-6 ">
-      <div className="col-span-3 space-y-4 p-6 rounded-md bg-white shadow-lg animate-pulse">
-        <div className="w-full h-12 bg-slate-300 rounded-sm"></div>
-        <div className="w-full h-12 bg-slate-300 rounded-sm"></div>
+    <div className="w-full p-4 sm:h-[calc(100vh-86px)] grid grid-cols-1 sm:grid-cols-6 border rounded-lg bg-[#fdfdfd] gap-3">
+      <div className="flex flex-col gap-4 h-full max-h-[650px] sm:max-h-[calc(100vh-118px)] sm:col-span-3 lg:col-span-4 bg-white">
+        <div className="w-full h-12 bg-slate-300 rounded-sm animate-pulse"></div>
+        <div className="w-full h-12 bg-slate-300 rounded-sm animate-pulse"></div>
         <h1 className="font-semibold">Daftar makanan:</h1>
-        <div className="grid grid-cols-5 gap-3">{menuCardElement}</div>
+        <div className="w-full p-2 min-h-0 flex-auto overflow-y-scroll rounded-lg bg-slate-100 shadow-inner">
+          <div className="grid grid-cols-5 gap-3 animate-pulse">{menuCardElement}</div>
+        </div>
       </div>
-      <div className="min-w-[100px] w-full px-6 py-10 bg-white border border-gray-200 rounded-lg shadow-lg space-y-3">{cartCardElement}</div>
+      <div className="flex flex-col justify-between gap-2 w-full min-w-[100px] h-full max-h-[650px] sm:max-h-[calc(100vh-118px)] sm:col-span-3 lg:col-span-2 animate-pulse">
+        <div className="flex flex-col gap-2">{cartCardElement}</div>
+        <div className="space-y-3">
+          <div className="w-full h-12 bg-slate-300 rounded-sm animate-pulse"></div>
+          <div className="w-full h-12 bg-slate-300 rounded-sm animate-pulse"></div>
+        </div>
+      </div>
     </div>
   );
 }
