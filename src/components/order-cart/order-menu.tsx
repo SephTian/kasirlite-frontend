@@ -72,7 +72,7 @@ export default function OrderMenu({ setModalType, toggleModal }: Props) {
       <h1 className="font-semibold">Daftar makanan:</h1>
       <div className="w-full p-2 min-h-0 flex-auto overflow-y-scroll rounded-lg bg-slate-100 shadow-inner">
         {menuData.error && <p>Silahkan muat ulang halaman</p>}
-        {menuData.data && <MenuList onOpenAddCartModal={handleOpenAddCartModal} menus={menuData.data}></MenuList>}
+        {menuData.data && <MenuList onOpenAddCartModal={handleOpenAddCartModal} menus={menuData.data.menus}></MenuList>}
       </div>
     </>
   );

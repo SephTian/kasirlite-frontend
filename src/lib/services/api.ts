@@ -37,9 +37,9 @@ const api = (() => {
         throw new Error(message);
       }
 
-      const { menus } = data;
+      const { menus, pagination } = data;
 
-      return menus;
+      return { menus, pagination };
     } catch (error) {
       if (error instanceof AxiosError) {
         throw new Error(error.response?.data?.message || 'error');
@@ -66,9 +66,9 @@ const api = (() => {
       }
     }
   }
-  async function delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
+  // async function delay(ms: number) {
+  //   return new Promise((resolve) => setTimeout(resolve, ms));
+  // }
 
   async function addTransaction({ cart, totalPrice, discount, customerName, note, type, paymentType, paymentKind }: TransactionFormData, option: AxiosRequestConfig) {
     try {
