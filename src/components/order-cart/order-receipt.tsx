@@ -1,29 +1,22 @@
 'use client';
 
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Button from '../custom-ui/button';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/lib/states';
-import { setSelectedMenu, setTotalPrice } from '@/lib/states/slices/cartSlice';
+import { setTotalPrice } from '@/lib/states/slices/cartSlice';
 import ReceiptTable from './receipt-table';
 import { formatRupiah } from '@/utils';
 
 type Props = {
-  setCartModalType: Dispatch<SetStateAction<'add' | 'edit'>>;
-  toggleCartModal: () => void;
+  onOpenEditCartModal?: (idx: number) => void;
   toggleReceiptModal: () => void;
   tax: number;
 };
 
-export default function OrderReceipt({ setCartModalType, toggleCartModal, toggleReceiptModal, tax }: Props) {
+export default function OrderReceipt({ onOpenEditCartModal, toggleReceiptModal, tax }: Props) {
   const { cart, totalPrice } = useSelector((state: RootState) => state.cart);
   const dispatch: AppDispatch = useDispatch();
-
-  const handleEditModal = (index: number) => {
-    dispatch(setSelectedMenu({ ...cart[index], menuIndex: index }));
-    setCartModalType('edit');
-    toggleCartModal();
-  };
 
   // set total price inside redux
   useEffect(() => {
@@ -37,7 +30,7 @@ export default function OrderReceipt({ setCartModalType, toggleCartModal, toggle
     <>
       <div className="text-center font-semibold">Transaksi</div>
       <div className="min-h-[150px] flex-auto overflow-y-scroll">
-        <ReceiptTable cart={cart} handleEditModal={handleEditModal} />
+        <ReceiptTable cart={cart} onOpenEditCartModal={onOpenEditCartModal} />
       </div>
       <div className="px-2 space-y-2">
         <div className="flex justify-between items-center text-gray-500">
