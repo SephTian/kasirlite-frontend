@@ -93,7 +93,8 @@ const api = (() => {
         throw new Error(message);
       }
 
-      console.log(data);
+      const { transaction } = data;
+      return transaction;
     } catch (error) {
       if (error instanceof AxiosError) {
         throw new Error(error.response?.data?.message || 'error');
