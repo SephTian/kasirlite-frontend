@@ -4,12 +4,13 @@ type Props = {
   label: string;
   isError: boolean;
   isImportant?: boolean;
+  classname?: string;
 } & React.InputHTMLAttributes<HTMLTextAreaElement>;
 
-const LabelTextarea = forwardRef<HTMLTextAreaElement, Props>(({ label, name, isError, isImportant, ...props }, ref) => {
+const LabelTextarea = forwardRef<HTMLTextAreaElement, Props>(({ className, label, name, isError, isImportant, ...props }, ref) => {
   return (
-    <div>
-      <label htmlFor={name} className="block text-sm mb-1">
+    <div className={className}>
+      <label htmlFor={name} className="block text-xs mb-0.5">
         {label}
         {isImportant && <span className="text-red-600 text-xs">*</span>}
       </label>
