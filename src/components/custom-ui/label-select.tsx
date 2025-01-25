@@ -5,11 +5,12 @@ type Props = {
   isError: boolean;
   children: ReactNode;
   isImportant?: boolean;
+  classname?: string;
 } & React.InputHTMLAttributes<HTMLSelectElement>;
 
-const LabelSelect = forwardRef<HTMLSelectElement, Props>(({ label, name, isError, children, isImportant, ...props }, ref) => {
+const LabelSelect = forwardRef<HTMLSelectElement, Props>(({ className, label, name, isError, children, isImportant, ...props }, ref) => {
   return (
-    <div>
+    <div className={className}>
       <label htmlFor={name} className="block text-sm mb-1">
         {label}
         {isImportant && <span className="text-red-600 text-xs">*</span>}
