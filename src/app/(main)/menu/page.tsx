@@ -46,7 +46,7 @@ export default async function MenuPage({ searchParams }: { searchParams?: { [key
       }),
   });
   return (
-    <div className="w-full p-4 sm:min-h-[calc(100vh-86px)] border rounded-lg bg-[#fdfdfd] space-y-6">
+    <div className="w-full sm:min-h-[calc(100vh-86px)] space-y-6">
       <Menu />
     </div>
   );
