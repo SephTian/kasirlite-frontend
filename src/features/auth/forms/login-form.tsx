@@ -5,8 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { loginFormSchema, LoginFormType } from '@/lib/schemas/loginSchema';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import Button from '../custom-ui/button';
-import LabelInput from '../custom-ui/label-input';
+import Button from '@/components/custom-ui/button';
+import LabelInput from '@/components/custom-ui/label-input';
 import { useToast } from '@/hooks/use-toast';
 
 const LoginForm = () => {
