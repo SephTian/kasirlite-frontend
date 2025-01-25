@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback } from 'react';
-import { Input } from '../ui/input';
+import { Input } from '@/components/ui/input';
 import { useDebouncedCallback } from 'use-debounce';
 
 type Props = {

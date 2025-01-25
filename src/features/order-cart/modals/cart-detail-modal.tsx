@@ -1,9 +1,9 @@
 import { AppDispatch, RootState } from '@/lib/states';
-import ModalWrapper from '../custom-ui/modal-wrapper';
+import ModalWrapper from '@/components/custom-ui/modal-wrapper';
 import foodItem from '@/assets/food-item.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { IoCloseCircleOutline } from 'react-icons/io5';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 import { addCartItem, deleteCartItem, setSelectedMenu, updateCartItem } from '@/lib/states/slices/cartSlice';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';

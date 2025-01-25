@@ -1,4 +1,4 @@
-import ModalWrapper from '../custom-ui/modal-wrapper';
+import ModalWrapper from '@/components/custom-ui/modal-wrapper';
 import { IoCloseCircleOutline } from 'react-icons/io5';
 import ReceiptForm from '../forms/receipt-form';
 import { useSelector } from 'react-redux';

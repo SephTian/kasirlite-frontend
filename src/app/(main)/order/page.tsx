@@ -1,5 +1,5 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import Order from '@/components/order-cart/order';
+import Order from '@/features/order-cart/components/order';
 import api from '@/lib/services/api';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { getServerSession } from 'next-auth';

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import Button from '../custom-ui/button';
+import Button from '@/components/custom-ui/button';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/lib/states';
 import { setTotalPrice } from '@/lib/states/slices/cartSlice';

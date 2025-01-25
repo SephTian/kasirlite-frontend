@@ -1,21 +1,22 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import LabelInput from '../custom-ui/label-input';
-import Button from '../custom-ui/button';
+
+import Button from '@/components/custom-ui/button';
 import { Controller, useForm } from 'react-hook-form';
 import { receiptFormSchema, ReceiptFormType } from '@/lib/schemas/receiptSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import ErrorInputMessage from '../custom-ui/error-input-message';
+import ErrorInputMessage from '@/components/custom-ui/error-input-message';
 import api from '@/lib/services/api';
 import { AppDispatch, RootState } from '@/lib/states';
 import { useDispatch, useSelector } from 'react-redux';
-import LabelSelect from '../custom-ui/label-select';
+import LabelSelect from '@/components/custom-ui/label-select';
 import { MdPayments } from 'react-icons/md';
-import LabelTextarea from '../custom-ui/label-textarea';
-import LabelRupiahInput from '../custom-ui/label-rupiah-input';
+import LabelTextarea from '@/components/custom-ui/label-textarea';
+import LabelRupiahInput from '@/components/custom-ui/label-rupiah-input';
 import { formatPrice, formatPriceToNumber, formatNumberToPrice, formatRupiah } from '@/utils';
 import { useToast } from '@/hooks/use-toast';
 import { getSession } from 'next-auth/react';
 import { unsetCart } from '@/lib/states/slices/cartSlice';
+import LabelInput from '@/components/custom-ui/label-input';
 
 type Props = { tax: number; totalPrice: number; closeModal: () => void };
 
