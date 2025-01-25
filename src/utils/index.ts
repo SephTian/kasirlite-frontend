@@ -27,3 +27,9 @@ export function formatPrice(price: string): string {
   formatedPrice = formatedPrice.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); // Make number to be currency
   return formatedPrice;
 }
+
+export function paramsChange(key: string, value: string, searchParams: string): string {
+  const params = new URLSearchParams(searchParams);
+  params.set(key, value);
+  return params.toString();
+}
