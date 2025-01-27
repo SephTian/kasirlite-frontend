@@ -28,8 +28,8 @@ const order = [
     icon: HiDocumentText,
   },
   {
-    title: 'Daftar Makanan',
-    url: '#',
+    title: 'Daftar Menu',
+    url: '/menu',
     icon: MdFastfood,
   },
 ];
