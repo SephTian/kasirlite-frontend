@@ -70,7 +70,7 @@ const api = (() => {
   //   return new Promise((resolve) => setTimeout(resolve, ms));
   // }
 
-  async function addTransaction({ cart, totalPrice, discount, customerName, note, type, paymentType, paymentKind }: TransactionFormData, option: AxiosRequestConfig) {
+  async function addTransaction({ cart, totalPrice, discount, customerName, note, type, date, paymentType, paymentKind }: TransactionFormData, option: AxiosRequestConfig) {
     try {
       const {
         data: { data, status, message },
@@ -83,6 +83,7 @@ const api = (() => {
           customerName: customerName,
           note: note ?? '',
           type: type,
+          date: date,
           paymentType: paymentType || null,
           paymentKind: paymentKind,
         },

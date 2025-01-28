@@ -17,6 +17,9 @@ import { useToast } from '@/hooks/use-toast';
 import { getSession } from 'next-auth/react';
 import { unsetCart } from '@/lib/states/slices/cartSlice';
 import LabelInput from '@/components/custom-ui/label-input';
+import LabelMinute from '@/components/custom-ui/label-minute';
+import LabelHour from '@/components/custom-ui/label-hour';
+import LabelDate from '@/components/custom-ui/label-date';
 
 type Props = { tax: number; totalPrice: number; closeModal: () => void };
 
@@ -28,6 +31,7 @@ export default function ReceiptForm({ totalPrice, tax, closeModal }: Props) {
   //untuk set after discount
   const [finalPrice, setFinalPrice] = useState(0);
   const [finalPriceError, setFinalPriceError] = useState<string | null>(null);
+  const now = new Date();
 
   const {
     control,
@@ -40,6 +44,9 @@ export default function ReceiptForm({ totalPrice, tax, closeModal }: Props) {
   } = useForm<ReceiptFormType>({
     defaultValues: {
       discount: '0',
+      date: now.toISOString().split('T')[0],
+      hour: String(now.getHours()).padStart(2, '0'),
+      minute: String(now.getMinutes()).padStart(2, '0'),
     },
     resolver: zodResolver(receiptFormSchema),
   });
@@ -79,6 +86,7 @@ export default function ReceiptForm({ totalPrice, tax, closeModal }: Props) {
             discount: formatPriceToNumber(data.discount),
             customerName: data.customerName,
             note: data.note,
+            date: `${data.date}T${data.hour}:${data.minute}:00`,
             totalPrice: totalPrice,
             type: data.type,
             paymentType: data.paymentType,
@@ -186,9 +194,21 @@ export default function ReceiptForm({ totalPrice, tax, closeModal }: Props) {
       )}
 
       {/* name section */}
-      <div>
-        <LabelInput {...register('customerName')} label="Nama Pelanggan" type="text" placeholder="Nama Pelanggan..." isError={errors.customerName ? true : false} isImportant />
-        {errors.customerName && <ErrorInputMessage>{errors.customerName.message}</ErrorInputMessage>}
+      <div className="grid md:grid-cols-2 gap-4">
+        <div>
+          <LabelInput {...register('customerName')} label="Nama Pelanggan" type="text" placeholder="Nama Pelanggan..." isError={errors.customerName ? true : false} isImportant />
+          {errors.customerName && <ErrorInputMessage>{errors.customerName.message}</ErrorInputMessage>}
+        </div>
+        <div>
+          <div className="flex gap-2">
+            <LabelDate className="flex-grow" {...register('date')} label="Tanggal pesan" isError={errors.date ? true : false} isImportant />
+            <LabelHour {...register('hour')} label="Jam" isError={errors.hour ? true : false} isImportant />
+            <LabelMinute {...register('minute')} label="Menit" isError={errors.minute ? true : false} isImportant />
+          </div>
+          {errors.date && <ErrorInputMessage>{errors.date.message}</ErrorInputMessage>}
+          {errors.hour && <ErrorInputMessage>{errors.hour.message}</ErrorInputMessage>}
+          {errors.minute && <ErrorInputMessage>{errors.minute.message}</ErrorInputMessage>}
+        </div>
       </div>
 
       {/* note section */}
