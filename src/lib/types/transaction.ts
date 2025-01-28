@@ -19,7 +19,7 @@ export type Transaction = {
   payments: Payment[]; // dri BE
 };
 
-export type TransactionFormData = Pick<Transaction, 'discount' | 'totalPrice' | 'customerName' | 'type'> & {
+export type TransactionFormData = Pick<Transaction, 'discount' | 'totalPrice' | 'customerName' | 'type' | 'date'> & {
   cart: {
     menuId?: Menu['id'] | null;
     menuName: Menu['name'];
