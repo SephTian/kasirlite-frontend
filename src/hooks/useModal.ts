@@ -30,7 +30,7 @@ function useModal() {
     setisOpen(true);
   }, []);
 
-  return [isOpen, toggleModal, closeModal, openModal];
+  return [isOpen, toggleModal, closeModal, openModal] as const;
 }
 
 export default useModal;
