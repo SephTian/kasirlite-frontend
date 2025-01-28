@@ -15,9 +15,11 @@ type Props = {
   totalItems: number;
   totalPages: number;
   handlePageChange: (page: number) => void;
+  handleOpenEditMenuModal: (id: number) => void;
+  handleOpenDetailMenuModal: (id: number) => void;
 };
 
-export default function MenuTable({ menus, currentPage, limit, totalItems, totalPages, handlePageChange }: Props) {
+export default function MenuTable({ menus, currentPage, limit, totalItems, totalPages, handlePageChange, handleOpenEditMenuModal, handleOpenDetailMenuModal }: Props) {
   return (
     <div>
       <table className="w-full border border-customOrange">
@@ -53,10 +55,10 @@ export default function MenuTable({ menus, currentPage, limit, totalItems, total
                   </td>
                   <td>
                     <div className="flex gap-3 justify-center items-center">
-                      <Button className="p-2 bg-blue-500 text-white hover:bg-blue-600">
+                      <Button onClick={() => handleOpenDetailMenuModal(Number(item.id))} className="p-2 bg-blue-500 text-white hover:bg-blue-600">
                         <IoInformationCircleOutline size={20} />
                       </Button>
-                      <Button className="p-2 bg-orange-500 text-white hover:bg-orange-600">
+                      <Button onClick={() => handleOpenEditMenuModal(Number(item.id))} className="p-2 bg-orange-500 text-white hover:bg-orange-600">
                         <MdModeEdit size={20} />
                       </Button>
                     </div>

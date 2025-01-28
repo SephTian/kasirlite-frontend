@@ -6,17 +6,30 @@ import { useQuery } from '@tanstack/react-query';
 import { getSession } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import Filter from './filter';
 import { FaRegPlusSquare } from 'react-icons/fa';
 
 import MenuTable from './menu-table';
 import MenuTableLoading from './menu-table-loading';
 import Button from '@/components/custom-ui/button';
+import useModal from '@/hooks/useModal';
+import AddMenuModal from '../modals/add-menu-modal';
+import EditMenuModal from '../modals/edit-menu-modal';
+import DetailMenuModal from '../modals/detail-menu-modal';
 
 export default function Menu({}) {
   const searchParams = useSearchParams();
   const router = useRouter();
+
+  // Modal state
+  const [isOpenAddMenuModal, toggleAddMenuModal] = useModal();
+  const [isOpenEditMenuModal, toggleEditMenuModal] = useModal();
+  const [selectedEditMenuId, setSelectedEditMenuId] = useState<null | number>(null);
+  const [isOpenDetailMenuModal, toggleDetailMenuModal] = useModal();
+  const [selectedDetailMenuId, setSelectedDetailMenuId] = useState<null | number>(null);
+
+  // search params var
   const keywordParams = searchParams.get('keyword')?.toLowerCase() || '';
   const categoryParams = searchParams.get('category')?.toLowerCase() || '';
   const pageParams = searchParams.get('page') || 1;
@@ -29,7 +42,6 @@ export default function Menu({}) {
   } = useQuery({
     queryKey: ['getMenus', keywordParams, categoryParams, pageParams],
     queryFn: async () => {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
       const session = await getSession();
       return api.getMenus({
         params: {
@@ -68,26 +80,52 @@ export default function Menu({}) {
   const totalItems = menuData?.pagination?.totalItems || 0;
   const limit = menuData?.pagination?.limit || 0;
 
+  function handleOpenEditMenuModal(id: number) {
+    setSelectedEditMenuId(id);
+    toggleEditMenuModal();
+  }
+
+  function handleOpenDetailMenuModal(id: number) {
+    setSelectedDetailMenuId(id);
+    toggleDetailMenuModal();
+  }
+
   //@ TODO Betulin masalah angka di showing of entries dan nomor di tabel -- done
   return (
     <>
-      <Filter />
-      <div className="border rounded-lg bg-[#fdfdfd] p-4 space-y-4">
-        <div className="flex gap-3">
-          <DebounceInput classname="flex-grow" onChange={handleSearchChange} placeholder="Cari menu..." debounceTime={500} searchParamName="keyword" />
-          <Button className="bg-customOrange hover:bg-customDarkOrange text-white px-2 py-1 text-sm font-medium" onClick={() => console.log('tambah')}>
-            <FaRegPlusSquare size={20} />
-            Tambah
-          </Button>
-        </div>
-        {menuPending && <MenuTableLoading />}
-        {menuData && !menuPending && <MenuTable menus={menuData?.menus} currentPage={currentPage} limit={limit} totalPages={totalPages} totalItems={totalItems} handlePageChange={handlePageChange} />}
-        {menuError && !menuPending && (
-          <div className="w-full flex justify-center items-center h-10">
-            <p className="text-center text-gray-500">Silahkan muat ulang halaman</p>
+      <div className="w-full sm:min-h-[calc(100vh-86px)] space-y-6">
+        <Filter />
+        <div className="border rounded-lg bg-[#fdfdfd] p-4 space-y-4">
+          <div className="flex gap-3">
+            <DebounceInput classname="flex-grow" onChange={handleSearchChange} placeholder="Cari menu..." debounceTime={500} searchParamName="keyword" />
+            <Button className="bg-customOrange hover:bg-customDarkOrange text-white px-2 py-1 text-sm font-medium" onClick={toggleAddMenuModal}>
+              <FaRegPlusSquare size={20} />
+              Tambah
+            </Button>
           </div>
-        )}
+          {menuPending && <MenuTableLoading />}
+          {menuData && !menuPending && (
+            <MenuTable
+              menus={menuData?.menus}
+              currentPage={currentPage}
+              limit={limit}
+              totalPages={totalPages}
+              totalItems={totalItems}
+              handlePageChange={handlePageChange}
+              handleOpenEditMenuModal={handleOpenEditMenuModal}
+              handleOpenDetailMenuModal={handleOpenDetailMenuModal}
+            />
+          )}
+          {menuError && !menuPending && (
+            <div className="w-full flex justify-center items-center h-10">
+              <p className="text-center text-gray-500">Silahkan muat ulang halaman</p>
+            </div>
+          )}
+        </div>
       </div>
+      <AddMenuModal isOpen={isOpenAddMenuModal} closeModal={toggleAddMenuModal} />
+      <EditMenuModal menus={menuData?.menus} menuId={selectedEditMenuId} isOpen={isOpenEditMenuModal} closeModal={toggleEditMenuModal} />
+      <DetailMenuModal menus={menuData?.menus} menuId={selectedDetailMenuId} isOpen={isOpenDetailMenuModal} closeModal={toggleDetailMenuModal} />
     </>
   );
 }
