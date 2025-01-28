@@ -1,3 +1,7 @@
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
 export function formatRupiah(amount: number): string {
   return `Rp${amount.toLocaleString('id-ID')}`;
 }
@@ -32,4 +36,12 @@ export function paramsChange(key: string, value: string, searchParams: string): 
   const params = new URLSearchParams(searchParams);
   params.set(key, value);
   return params.toString();
+}
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+export function formatDateToLocale(date: string): string {
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const formattedDate = dayjs.utc(date).tz(userTimeZone).format('YYYY-MM-DDTHH:mm:ss');
+  return formattedDate;
 }
