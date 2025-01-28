@@ -20,6 +20,7 @@ import LabelInput from '@/components/custom-ui/label-input';
 import LabelMinute from '@/components/custom-ui/label-minute';
 import LabelHour from '@/components/custom-ui/label-hour';
 import LabelDate from '@/components/custom-ui/label-date';
+import { useMutation } from '@tanstack/react-query';
 
 type Props = { tax: number; totalPrice: number; closeModal: () => void };
 
@@ -65,70 +66,76 @@ export default function ReceiptForm({ totalPrice, tax, closeModal }: Props) {
     setFinalPriceError(null);
   }, [TOTAL_PRICE_WITH_TAX, discountFormValue]);
 
-  // Handling adding transaction
-  async function handleAddTransaction(data: ReceiptFormType) {
-    const session = await getSession();
-
-    try {
-      if (!finalPriceError) {
-        const mappedCart = cart.map((item) => {
-          return {
-            menuId: item.menu.id || null,
-            menuName: item.menu.name,
-            quantity: item.quantity,
-            subPrice: item.subPrice,
-          };
-        });
-
-        const transaction = await api.addTransaction(
-          {
-            cart: mappedCart,
-            discount: formatPriceToNumber(data.discount),
-            customerName: data.customerName,
-            note: data.note,
-            date: `${data.date}T${data.hour}:${data.minute}:00`,
-            totalPrice: totalPrice,
-            type: data.type,
-            paymentType: data.paymentType,
-            paymentKind: data.paymentKind,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${session?.accessToken}`,
-            },
-          }
-        );
-        console.log(transaction);
-
-        //@TODO buat close modal -- done
-        closeModal();
-        dispatch(unsetCart());
-
-        //@TODO arahin ke halaman transaction id
-
-        //@TODO ubah ke usemutation
-
-        toast({
-          variant: 'constructive',
-          title: 'Success',
-          description: 'Transaksi baru berhasil dibuat',
-        });
-      }
-    } catch (error) {
-      toast({
-        variant: 'destructive',
-        title: 'Failed',
-        description: (error as Error).message,
-      });
-    }
-  }
-
   //Make discount value always on preferable price format
   const handleDiscountChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
     setValue('discount', formatPrice(input));
     trigger('discount'); // trigger the validation schema
   };
+
+  // Handling adding transaction
+  async function handleAddTransaction(data: ReceiptFormType) {
+    if (!finalPriceError) {
+      mutate(data);
+    }
+  }
+
+  //  Using useMutation for sending data
+  const { mutate } = useMutation({
+    mutationFn: async (data: ReceiptFormType) => {
+      const session = await getSession();
+      const mappedCart = cart.map((item) => {
+        return {
+          menuId: item.menu.id || null,
+          menuName: item.menu.name,
+          quantity: item.quantity,
+          subPrice: item.subPrice,
+        };
+      });
+
+      return await api.addTransaction(
+        {
+          cart: mappedCart,
+          discount: formatPriceToNumber(data.discount),
+          customerName: data.customerName,
+          note: data.note,
+          date: `${data.date}T${data.hour}:${data.minute}:00`,
+          totalPrice: totalPrice,
+          type: data.type,
+          paymentType: data.paymentType,
+          paymentKind: data.paymentKind,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${session?.accessToken}`,
+          },
+        }
+      );
+    },
+    onSuccess: (transaction) => {
+      toast({
+        variant: 'constructive',
+        title: 'Success',
+        description: 'Transaksi baru berhasil dibuat',
+      });
+
+      //@ TODO buat close modal -- DONE
+      closeModal();
+      dispatch(unsetCart());
+      //console.log(formatDateToLocale(transaction));
+      console.log(transaction);
+
+      //@TODO arahin ke halaman transaction id
+      // navigate(`/transaction/${transaction.id}`);
+    },
+    onError: (error) => {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: (error as Error).message,
+      });
+    },
+  });
 
   return (
     <form className="space-y-4" onSubmit={handleSubmit(handleAddTransaction)}>
