@@ -46,8 +46,8 @@ export default async function MenuPage({ searchParams }: { searchParams?: { [key
       }),
   });
   return (
-    <div className="w-full sm:min-h-[calc(100vh-86px)] space-y-6">
+    <>
       <Menu />
-    </div>
+    </>
   );
 }
